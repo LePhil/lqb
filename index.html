@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- META -->
+	<title>HTML KickStart Elements</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="description" content="" />
+
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+
+	<!-- Javascript -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/kickstart.js"></script>
+</head>
+<body>
+<div class="grid">
+	<div class="col_12" style="margin-top:100px;">
+		<h1 class="center">
+			LQB Dateneinsicht
+		</h1>
+
+		<div class="col_1"></div>
+		<div class="col_10">
+			<p>Herzlich willkommen bei der Dateneinsicht der Studie "Lebensqualitätsbarometer"!</p>
+			<p>Hier können Sie Ihre Daten aus der Studie einsehen. Aus Sicherheits- und Datenschutzgründen müssen Sie sich zuerst mit Ihrem <b>Geburtsdatum</b> (z.B. 28.04.1976) und ihrem persönlichen <b>Zugangscode</b> anmelden. Der persönliche Zugangscode umfasst 5 Zeichen und ist derselbe, den Sie auch beim monatlichen Fragebogen benutzen.</p>
+		</div>
+
+		<div class="clear"></div>
+
+		<form class="vertical center">
+			<div class="col_1 left"></div>
+			<div class="col_4 left">
+				<h6>Geburtsdatum:</h6>
+			</div>
+
+			<div class="col_2">
+				<input id="birthdate_day" placeholder="Tag" type="text" />
+			</div>
+
+			<div class="col_2">
+				<input id="birthdate_month" placeholder="Monat" type="text" />
+			</div>
+
+			<div class="col_2">
+				<input id="birthdate_year" placeholder="Jahr" type="text" />
+			</div>
+
+			<div class="clear"></div>
+
+			<div class="col_1 left"></div>
+			<div class="col_4 left">
+				<h6>Zugangscode:</h6>
+			</div>
+
+			<div class="col_6">
+				<input id="code" type="text" />
+			</div>
+
+		</form>
+
+		<div class="clear"></div>
+		<div class="col_12 center">
+			<button class="large">Anmelden</button>
+		</div>
+
+	</div>
+</div> <!-- End Grid -->
+</body>
+</html>
