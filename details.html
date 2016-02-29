@@ -14,17 +14,219 @@
 	<!-- Javascript -->
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/kickstart.js"></script>
+	<script type="text/javascript" src="js/chartjs/Chart.min.js"></script>
+
+	<style>
+		.canvas-holder {
+				text-align: center;
+		}
+		.sectionTitle {
+			border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
+		}
+		ul.button-bar {
+			margin-bottom: 20px;
+		}
+		.changeMonthBtn.activeMonth,
+		.changeMonthBtn.activeMonth:hover {
+			text-shadow: 0 -1px 0 #1D6DC1;
+			color: #fff;
+			background: rgb(122,188,255);
+			background: -moz-linear-gradient(top, rgba(122,188,255,1) 0%, rgba(96,171,248,1) 44%, rgba(64,150,238,1) 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122,188,255,1)), color-stop(44%,rgba(96,171,248,1)), color-stop(100%,rgba(64,150,238,1)));
+			background: -webkit-linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
+			background: -o-linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
+			background: linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
+		}
+	</style>
 </head>
 <body>
 <div class="grid">
 	<div class="col_12" style="margin-top:100px;">
-		<h1 class="center">
-			LQB Dateneinsicht
-		</h1>
+		<div class="tab-content">
+			<div class="col_4">
+				<img src="img/uzh_logo_d_pos_web_main.jpg">
+			</div>
 
-		<div class="clear"></div>
+			<h1>LQB Dateneinsicht</h1>
+		</div>
+
+		<div class="col_12">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+
+		<h3 class="sectionTitle col_12">Total über Zeit</h3>
+		<div class="col_7 canvas-holder">
+			<canvas id="chart-area1" height="300" width="600"></canvas>
+		</div>
+		<div class="col_5">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+
+		<h3 class="sectionTitle col_12">Gewichtungen</h3>
+		<div class="col_5">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+		<div class="col_7 canvas-holder">
+			<ul class="button-bar">
+				<li><a class="changeMonthBtn" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
+				<li><a class="changeMonthBtn month0" data-month="0" href="">Dez.</a></li>
+				<li><a class="changeMonthBtn month1" data-month="1" href="">Jan.</a></li>
+				<li><a class="changeMonthBtn month2" data-month="2" href="">Feb,</a></li>
+				<li><a class="changeMonthBtn month3" data-month="3" href="">März</a></li>
+				<li><a class="changeMonthBtn month4" data-month="4" href="">April</a></li>
+				<li><a class="changeMonthBtn month5 activeMonth" data-month="5" href="">Mai</a></li>
+				<li><a class="changeMonthBtn" data-month="next" href=""><i class="fa fa-caret-right"></i></a></li>
+			</ul>
+      <canvas id="chart-area2" width="300" height="300"></canvas>
+		</div>
+
+		<h3 class="sectionTitle col_12">Happiness</h3>
+		<div class="col_7 canvas-holder">
+			<ul class="button-bar">
+				<li><a class="changeMonthBtn" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
+				<li><a class="changeMonthBtn month0" data-month="0" href="">Dez.</a></li>
+				<li><a class="changeMonthBtn month1" data-month="1" href="">Jan.</a></li>
+				<li><a class="changeMonthBtn month2" data-month="2" href="">Feb,</a></li>
+				<li><a class="changeMonthBtn month3" data-month="3" href="">März</a></li>
+				<li><a class="changeMonthBtn month4" data-month="4" href="">April</a></li>
+				<li><a class="changeMonthBtn month5 activeMonth" data-month="5" href="">Mai</a></li>
+				<li><a class="changeMonthBtn" data-month="next" href=""><i class="fa fa-caret-right"></i></a></li>
+			</ul>
+			<canvas id="chart-area3" height="450" width="600"></canvas>
+		</div>
+		<div class="col_5">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</p>
+		</div>
 
 	</div>
 </div> <!-- End Grid -->
+
+<script type="text/javascript">
+	var currentMonth = 5,
+			lineChart,
+			pieChart,
+			barChart;
+
+	Chart.defaults.global.animation = true;
+	Chart.defaults.global.animationSteps = 30;
+	Chart.defaults.global.animationEasing = "easeInOutQuart";
+	Chart.defaults.global.scaleOverride = true;
+	Chart.defaults.global.scaleSteps = 5;
+	Chart.defaults.global.scaleStepWidth = 20;
+	Chart.defaults.global.scaleStartValue = 0;
+	Chart.defaults.global.scaleFontSize = 16;
+
+	var randomValue = function(){ return Math.round(Math.random()*100)};
+
+	var getPieData = function() {
+		return [{
+			value: randomValue(),
+			label: "A"
+		}, {
+			value: randomValue(),
+			label: "B"
+		}, {
+			value: randomValue(),
+			label: "C"
+		}, {
+			value: randomValue(),
+			label: "D"
+		}, {
+			value: randomValue(),
+			label: "E"
+		}];
+	};
+
+	var lineChartData = {
+				labels : [ "Dezember", "Januar", "Februar", "März", "April", "Mai" ],
+				scaleBeginAtZero: true,
+				datasets : [{
+					label: "Total über Zeit",
+					fillColor : "rgba(151,187,220,0.4)",
+					strokeColor : "rgb(151,187,220)",
+					pointColor : "rgb(151,187,220)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgb(151,187,220)",
+					data : [ randomValue(), randomValue(), randomValue(), randomValue(), randomValue(), randomValue() ]
+				}]
+			},
+			pieData = getPieData(),
+			barChartData = {
+				labels : [ "A", "B", "C", "D", "E" ],
+				datasets : [{
+					fillColor : "rgba(151,187,220,0.5)",
+					strokeColor : "rgba(151,187,220,0.8)",
+					highlightFill : "rgba(151,187,220,0.75)",
+					highlightStroke : "rgba(151,187,220,1)",
+					data : [ randomValue(), randomValue(), randomValue(), randomValue(), randomValue() ]
+				}]
+			};
+
+
+	$(".changeMonthBtn").on("click", function( e ) {
+		// TODO: check if data's available for this month
+		var nextMonth = $(e.target).data("month");
+
+		if ( nextMonth === undefined ) { // in case caret recognizes the click
+			nextMonth = $(e.originalEvent.currentTarget).data("month");
+		}
+
+		if ( nextMonth === "next" ) {
+			currentMonth++;
+		} else if ( nextMonth === "prev" ) {
+			currentMonth--;
+		} else {
+			currentMonth = +nextMonth;
+		}
+
+		if ( currentMonth > 5 ) {
+			currentMonth = 0;
+		} else if ( currentMonth < 0 ) {
+			currentMonth = 5
+		}
+
+		$(".activeMonth").removeClass("activeMonth");
+		$(".month" + currentMonth).addClass("activeMonth");
+
+		for( var i = 0; i < 5; i++ ) {
+			// use random values for now - TODO: get real values for this month
+			pieChart.segments[i].value = randomValue();
+			barChart.datasets[0].bars[i].value = randomValue();
+		}
+
+		barChart.update();
+		pieChart.update();
+
+		//console.log( pieChart.generateLegend() ); // TODO: maybe show legend
+
+		e.stopPropagation();
+		return false;
+	});
+
+	$(function() {
+
+		var ctx = $("#chart-area1")[0].getContext("2d");
+		lineChart = new Chart(ctx).Line(lineChartData, {
+			responsive: true
+		});
+
+		var ctx2 = $("#chart-area2")[0].getContext("2d");
+		pieChart = new Chart(ctx2).Pie(pieData, {
+			animationEasing: "easeInOutQuart",
+			animationSteps: 30
+		});
+
+		var ctx3 = $("#chart-area3")[0].getContext("2d");
+		barChart = new Chart(ctx3).Bar(barChartData, {
+			responsive: true
+		});
+	});
+
+</script>
+
 </body>
 </html>
