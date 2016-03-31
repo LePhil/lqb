@@ -4,6 +4,9 @@
 node_modules/*
 custom/*
 coverage/*
+docs/*
+samples/*
+src/*
 
 docs/index.md
 

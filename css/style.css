@@ -7,7 +7,7 @@
 /*---------------------------------
 	IMPORTS
 -----------------------------------*/
-@import url(https://fonts.googleapis.com/css?family=Arimo:400,700);
+// NO! @import url(https://fonts.googleapis.com/css?family=Arimo:400,700);
 
 /*---------------------------------
 	OVERRIDES
@@ -45,7 +45,7 @@ body{
 margin:0;
 padding:0 0 0 0;
 color:#000;
-background:#efefef url(css/img/gray_jean.png);
+background:#efefef url(img/gray_jean.png);
 font:normal 0.9em/150% 'Arimo', arial, verdana, sans-serif;
 text-shadow: 0 0 1px transparent; /* google font pixelation fix */
 }
@@ -152,4 +152,33 @@ padding:30px 0;
 border:5px solid #ddd;
 margin:30px 0;
 display:block;
+}
+
+/* MAIN */
+.notice {
+	display: none;
+}
+
+/* DETAILS */
+.canvas-holder {
+		text-align: center;
+}
+.sectionTitle {
+	border-bottom: 1px dotted rgba(0, 0, 0, 0.25);
+}
+ul.button-bar {
+	margin-bottom: 20px;
+	width: 100%;
+}
+.changeMonthBtn.activeMonth,
+.changeMonthBtn.activeMonth:hover {
+	text-shadow: 0 -1px 0 #1D6DC1;
+	color: #fff;
+	background: rgb(122,188,255);
+	background: -moz-linear-gradient(top, rgba(122,188,255,1) 0%, rgba(96,171,248,1) 44%, rgba(64,150,238,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122,188,255,1)), color-stop(44%,rgba(96,171,248,1)), color-stop(100%,rgba(64,150,238,1)));
+	background: -webkit-linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
+	background: -o-linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
+	background: linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
 }

@@ -1,0 +1,269 @@
+$(document).ready(function () {
+  var currentMonth,
+      lineChart,
+      pieChart,
+      barChart,
+      monthNames = [ "November", "Dezember", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober" ],
+      monthNamesShort = [ "Nov.", "Dez.", "Jan.", "Feb", "März", "April", "Mai", "Juni", "Juli", "Aug.", "Sept.", "Okt." ],
+      months = [],
+      totalBarData = [],
+      totalPieData = [],
+      colors = ["red", "blue", "green", "yellow", "black"]; // TODO: use in bar and pie chart
+
+  //First month was November
+  var getMonthName = function( lqbIndex ) { return monthNames[ (lqbIndex-1) % 12 ]; };
+  var getShortMonthName = function( lqbIndex ) { return monthNamesShort[ (lqbIndex-1) % 12 ]; };
+
+  var createMonthButtons = function() {
+    // If there's only one (or zero) months, it's useless to draw the buttons
+    if ( months.length <= 1 ) {
+      $(".monthButtons").hide();
+    } else {
+      _.each( months, function( m ){
+        var classes = 'changeMonthBtn month'+ m.id +' '+ (m.id === currentMonth ? "activeMonth" : "");
+        $( '<li><a class="'+ classes +'" data-month="'+ m.id +'" href="">'+ getShortMonthName( m.id ) +'</a></li>' ).insertBefore( ".monthButtons li:last-child" );
+      });
+    }
+  }
+
+  Chart.defaults.global.animation = true;
+  Chart.defaults.global.animationSteps = 30;
+  Chart.defaults.global.animationEasing = "easeInOutQuart";
+  Chart.defaults.global.scaleOverride = true;
+  Chart.defaults.global.scaleSteps = 5;
+  Chart.defaults.global.scaleStepWidth = 20;
+  Chart.defaults.global.scaleStartValue = 0;
+  Chart.defaults.global.scaleFontSize = 16;
+
+  var randomValue = function(){ return Math.round(Math.random()*100)};
+
+  // TODO: remove
+  var getPieData = function() {
+    return [
+      { value: 0, label: "" },
+      { value: 0, label: "" },
+      { value: 0, label: "" },
+      { value: 0, label: "" },
+      { value: 0, label: "" }]
+    };
+
+  var lineChartData = {
+        labels : [],
+        scaleBeginAtZero: true,
+        datasets : [{
+          label: "Total über Zeit",
+          fillColor : "rgba(151,187,220,0.4)",
+          strokeColor : "rgb(151,187,220)",
+          pointColor : "rgb(151,187,220)",
+          pointStrokeColor : "#fff",
+          pointHighlightFill : "#fff",
+          pointHighlightStroke : "rgb(151,187,220)",
+          data : []
+        }]
+      },
+      pieData = getPieData(),
+      barChartData = {
+        labels : [],
+        datasets : [{
+          //fillColor : "rgba(151,187,220,0.5)",
+          fillColor : colors,
+          strokeColor : "rgba(151,187,220,0.8)",
+          highlightFill : "rgba(151,187,220,0.75)",
+          highlightStroke : "rgba(151,187,220,1)",
+          data : []
+        }]
+      };
+
+  $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
+    var nextMonth = $(e.target).data("month"),
+        lastMonthID = _.last( months ).id,
+        firstMonthID = _.first( months ).id;
+
+
+    if ( nextMonth === undefined ) { // in case the icon on prev/next recognizes the click
+      nextMonth = $(e.target).parent().data("month");
+    }
+    if ( nextMonth === undefined ) { // in case caret recognizes the click
+      nextMonth = $(e.originalEvent.currentTarget).data("month");
+    }
+
+    if ( nextMonth === "next" ) {
+      if ( currentMonth >= lastMonthID ) {
+        currentMonth = firstMonthID;
+      } else {
+        currentMonth = _.find( months, function(m){ return m.id > currentMonth; }).id;
+      }
+    } else if ( nextMonth === "prev" ) {
+      if ( currentMonth <= firstMonthID ) {
+        currentMonth = lastMonthID;
+      } else {
+        currentMonth = _.last( _.filter( months, function(m){ return m.id < currentMonth; } ) ).id;
+      }
+    } else {
+      currentMonth = +nextMonth;
+    }
+
+    $(".activeMonth").removeClass("activeMonth");
+    $(".month" + currentMonth).addClass("activeMonth");
+
+    updateGraphs();
+
+    e.stopPropagation();
+    return false;
+  });
+
+  var updateGraphs = function() {
+    var relevantData = _.find( months, function(m){return m.id === currentMonth; });
+
+    for( var i = 0; i < pieChart.segments.length; i++ ) {
+      pieChart.segments[i].value = relevantData.weights[i].val;
+      var val = relevantData.words[i].val;
+      pieChart.segments[i].label = ( val.length > 28 ? val.substr( 0, 25 ) + "..." : val );
+    }
+
+    for( var i = 0; i < barChart.datasets[0].bars.length; i++ ) {
+      barChart.datasets[0].bars[i].value = relevantData.values[i].val;
+      var val = relevantData.words[i].val;  // make label for bar chart max. 15 chars
+      barChart.scale.xLabels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
+      barChart.datasets[0].bars[i].label = relevantData.words[i].val;
+    }
+
+    barChart.update();
+    pieChart.update();
+  };
+
+  var drawCharts = function() {
+    var ctx = $("#chart-area1")[0].getContext("2d");
+    lineChart = new Chart(ctx).Line(lineChartData, {
+      responsive: true
+    });
+
+    var ctx2 = $("#chart-area2")[0].getContext("2d");
+    pieChart = new Chart(ctx2).Pie(pieData, {
+      animationEasing: "easeInOutQuart",
+      animationSteps: 30
+    });
+
+    var ctx3 = $("#chart-area3")[0].getContext("2d");
+    barChart = new Chart(ctx3).Bar(barChartData, {
+      responsive: true
+    });
+
+  };
+
+  var getData = function() {
+    $.ajax({
+      url: "php/getData.php",
+      type: "POST",
+      dataType : 'json',
+      success: function( data ){
+
+        _.each(data, function(val, key) {
+          if ( key.indexOf("_t") <0 ) return;
+          var group = key.substr(key.lastIndexOf("_t")+2),
+              month = _.find( months, function( m ) {
+                return m.id === parseInt( group );
+              });
+
+          if ( !month ) { // create new month if not found yet
+            month = {
+              id: parseInt( group ),
+              words: [],
+              values: [],
+              weights: [],
+              result: 0
+            };
+            months.push( month );
+          }
+
+          // put into correct array
+          if ( key.indexOf( "Zufriedenheit" ) >= 0 ) {
+            month.values.push({
+              id: key.substr( key.indexOf("_t"+group) -1, 1),
+              val: val ? val.trim() : ""
+            });
+          } else if ( key.indexOf( "Gewichtung" ) >= 0 ) {
+            month.weights.push({
+              id: key.substr( key.indexOf("_t"+group) -1, 1),
+              val: val
+            })
+          } else if ( key.indexOf( "Aspekt" ) >= 0 ) {
+            month.words.push({
+              id: key.substr( key.indexOf( "Aspekt_" ) + 7, 1),
+              val: val
+            })
+          } else if ( key.toLowerCase().indexOf( "seiqol" ) >= 0 ) {
+            month.result = val;
+          }
+        });
+
+        // Remove months with no result, insufficient data, or empty words.
+        // Careful: First month is different, as there wasn't a Stichwort yet.
+        months = _.reject( months, function(m) {
+          return !m.result ||
+                 m.words.length !== 5 ||
+                 m.values.length !== 5 ||
+                 m.weights.length !== 5 ||
+                 _.any( m.words, function(w){ return _.isEmpty( w.val.trim() ); });
+        });
+
+        // limit it to the last 6 months
+        months = _.last( months, 6 );
+
+        currentMonth = _.max( months, function(m){ return m.id; });
+
+        _.each( months, function(m) {
+          // LINECHART
+          if ( m.result && parseInt( m.result ) ) {
+            lineChartData.labels.push( getMonthName( m.id ) );
+            lineChartData.datasets[0].data.push(  parseInt( m.result ) );
+          }
+
+          // PIE
+          totalPieData.push({
+            id: m.id,
+            name: getMonthName( m.id ),
+            data: []
+          });
+
+          // BARCHART
+          totalBarData.push({
+            id: m.id,
+            name: getMonthName( m.id ),
+            labels: [],
+            values: [],
+            weights: []
+          });
+          _.each( m.words, function(w) {
+            _.last( totalBarData ).labels.push( w.val );
+          });
+          _.each( m.values, function(v) {
+            _.last( totalBarData ).values.push( v.val );
+          });
+          _.each( m.weights, function(w, index) {
+            _.last( totalBarData ).weights.push( w.val );
+
+            _.last( totalPieData ).data.push({
+              label: _.last( totalBarData ).labels[ index ],
+              value: w.val
+            });
+          });
+
+        });
+
+        currentMonth = _.last( months ).id;
+        createMonthButtons();
+
+        barChartData.labels = _.last( totalBarData ).labels;
+        barChartData.datasets[0].data = _.last( totalBarData ).values;
+        pieData = _.last( totalPieData ).data;
+
+        drawCharts();
+      }
+    }).fail(function( data ) {
+      debugger;
+    });
+  };
+
+  getData();
+});

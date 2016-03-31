@@ -1,19 +1,29 @@
+<?php
+include 'php/lqbFunctions.php';
+
+if ( isLoggedIn() ) {
+	goToDetails();
+	exit;
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<!-- META -->
-	<title>HTML KickStart Elements</title>
+	<title>LQB Dateneinsicht</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="" />
 
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
 	<!-- Javascript -->
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/kickstart.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
 <div class="grid">
@@ -70,9 +80,30 @@
 
 		</form>
 
+
 		<div class="clear"></div>
-		<div class="col_12 center">
-			<a href="details.html" class="button large">Anmelden</a>
+		<div class="col_1 left"></div>
+		<div class="col_10 center">
+
+			<div class="notice error" id="errorNotification">
+				<i class="icon-remove-sign icon-large"></i>
+				Keine Einträge gefunden. Sind alle Angaben richtig?
+				<a href="#close" class="icon-remove"></a>
+			</div>
+
+			<div class="notice warning" id="codeHint">
+				<i class="icon-warning-sign icon-large"></i>
+				Der Code sollte fünfstellig sein und nur aus Zahlen bestehen.
+				<a href="#close" class="icon-remove"></a>
+			</div>
+
+			<div class="notice warning" id="birthdayHint">
+				<i class="icon-warning-sign icon-large"></i>
+				Das Geburtsdatum ist nicht korrekt eingegeben.
+				<a href="#close" class="icon-remove"></a>
+			</div>
+
+			<button id="loginBtn" class="button large">Anmelden</button>
 		</div>
 
 	</div>
