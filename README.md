@@ -1,32 +1,8 @@
-# HTML KickStart #
-by Joshua Gatcke
-http://www.99lime.com
-Version: 0.94
-
-## What is HTML KickStart? ##
-
-HTML KickStart is an ultra–lean set of HTML5, CSS, and jQuery (javascript) files, layouts, and elements designed to give you a headstart and save you 10's of hours on your next web project. 
-
-HTML KickStart includes everything you need to rapidly create website layouts – things like slideshows, menus, flexible grids, image placeholders, buttons, and more – saving you a ton of time so you can produce faster and make more money.
-
-Bonus! All HTML KickStart Elements are fully Browser tested, they even gracefully degrade ;)
-
-## Perfect for Wireframing in HTML ##
-
-HTML KickStart has everything you need to rapidly create HTML Page Layouts, perfect for Wireframing in HTML. 
-Layouts that used to take hours now take minutes.
-
-## Getting Started ##
-
-1. Download HTML KickStart
-2. Open blank.html in your favorite text editor
-3. Start adding KickStart Elements to blank.html: (http://www.99lime.com/elements/)
-4. Save blank.html and open in your favorite Web Browser
-5. Have fun!
+# LQB Data Viz #
+Small data visualisation for the Life Quality Barometer study at the University of Zürich.
 
 
-## HTML KickStart is FREE and Open Source. ##
-### Release Under the MIT Open Source License. ###
+Using HTML KickStart from Joshua Gatcke:
 
 Copyright © 2011-2012 Joshua Gatcke http://www.99lime.com | HTML KickStart
 
