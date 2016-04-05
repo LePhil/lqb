@@ -40,24 +40,24 @@ if ( !isLoggedIn() ) {
 		</div>
 
 		<div class="col_12">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p>Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebensqualitätsangaben der vergangenen 6 Monate aufgeführt.</p>
 		</div>
 
 		<div class="col_12 right">
 			<a class="button" href="php/logout.php">Abmelden</a>
 		</div>
 
-		<h3 class="sectionTitle col_12">Total über Zeit</h3>
+		<h3 class="sectionTitle col_12">Ihre Lebensqualität im Gesamtwert</h3>
 		<div class="col_7 canvas-holder">
 			<canvas id="chart-area1" height="300" width="600"></canvas>
 		</div>
 		<div class="col_5">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p>In dieser Grafik sehen Sie Ihren jeweiligen monatlichen Gesamtwert der persönlichen Lebensqualität (Maximalwert: 100) im Verlauf über die Zeit abgetragen.</p>
 		</div>
 
-		<h3 class="sectionTitle col_12">Gewichtungen</h3>
+		<h3 class="sectionTitle col_12">Gewichtung: Wie wichtig ist Ihnen jeder einzelne Aspekt?</h3>
 		<div class="col_5">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p>Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.</p>
 			<ul id="pieLegend">
 				<li><div class="color"></div><div class="text"></div></li>
 				<li><div class="color"></div><div class="text"></div></li>
@@ -74,7 +74,7 @@ if ( !isLoggedIn() ) {
       <canvas id="chart-area2" width="300" height="300"></canvas>
 		</div>
 
-		<h3 class="sectionTitle col_12">Happiness</h3>
+		<h3 class="sectionTitle col_12">Zufriedenheit: Wie gut läuft es aktuell in jedem der genannten Aspekte?</h3>
 		<div class="col_7 canvas-holder">
 			<ul class="button-bar monthButtons">
 				<li><a class="changeMonthBtn" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
@@ -84,7 +84,8 @@ if ( !isLoggedIn() ) {
 		</div>
 		<div class="col_5">
 			<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				Für jeden der Bereiche haben Sie zudem angegeben, wie gut es in jedem der genannten Lebensaspekte für Sie im jeweiligen Monat lief.<br>
+Die Angaben sehen Sie links für jeden der Bereiche in Form eines Balkens abgetragen.
 			</p>
 		</div>
 
