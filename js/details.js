@@ -1,5 +1,6 @@
 $(document).ready(function () {
-  var currentMonth,
+  var nrOfEntries = 5,
+      currentMonth,
       lineChart,
       pieChart,
       barChart,
@@ -8,7 +9,55 @@ $(document).ready(function () {
       months = [],
       totalBarData = [],
       totalPieData = [],
-      colors = ["red", "blue", "green", "yellow", "black"]; // TODO: use in bar and pie chart
+      pieColors = [ "#F00", "#CF0", "#0F6", "#06F", "#C0F" ],
+      pieColorsLight = ["rgba(255, 0, 0, 0.75)", "rgba(204,255,0,0.75)", "rgba(0, 255, 102, 0.75)", "rgba(0, 102, 255, 0.75)", "rgba(204, 0, 255, 0.75)"],
+      barColors = pieColorsLight,
+      barColorsLight = [ "rgba(255, 0, 0, 0.5)", "rgba(204,255,0,0.5)", "rgba(0, 255, 102, 0.5)", "rgba(0, 102, 255, 0.5)", "rgba(204, 0, 255, 0.5)" ],
+      lineChartData = {
+        labels : [],
+        scaleBeginAtZero: true,
+        datasets : [{
+          label: "Total über Zeit",
+          fillColor : "rgba(151,187,220,0.4)",
+          strokeColor : "rgb(151,187,220)",
+          pointColor : "rgb(151,187,220)",
+          pointStrokeColor : "#fff",
+          pointHighlightFill : "#fff",
+          pointHighlightStroke : "rgb(151,187,220)",
+          data : []
+        }]
+      },
+      pieData = function() {
+        var data = [];
+        for( var i = 0; i < nrOfEntries; i++ ) {
+          data.push({
+            value: 0,
+            label: "",
+            color: pieColors[i],
+            highlight: pieColorsLight[i]
+          });
+        }
+        return data;
+      }(),
+      barChartData = {
+        labels : [],
+        datasets : [{
+          fillColor : barColors,
+          strokeColor : "rgba(151,187,220,0.8)",
+          highlightFill : barColorsLight,
+          highlightStroke : "rgba(151,187,220,1)",
+          data : []
+        }]
+      };
+
+  Chart.defaults.global.animation = true;
+  Chart.defaults.global.animationSteps = 30;
+  Chart.defaults.global.animationEasing = "easeInOutQuart";
+  Chart.defaults.global.scaleOverride = true;
+  Chart.defaults.global.scaleSteps = 5;
+  Chart.defaults.global.scaleStepWidth = 20;
+  Chart.defaults.global.scaleStartValue = 0;
+  Chart.defaults.global.scaleFontSize = 16;
 
   //First month was November
   var getMonthName = function( lqbIndex ) { return monthNames[ (lqbIndex-1) % 12 ]; };
@@ -24,55 +73,13 @@ $(document).ready(function () {
         $( '<li><a class="'+ classes +'" data-month="'+ m.id +'" href="">'+ getShortMonthName( m.id ) +'</a></li>' ).insertBefore( ".monthButtons li:last-child" );
       });
     }
-  }
+  };
 
-  Chart.defaults.global.animation = true;
-  Chart.defaults.global.animationSteps = 30;
-  Chart.defaults.global.animationEasing = "easeInOutQuart";
-  Chart.defaults.global.scaleOverride = true;
-  Chart.defaults.global.scaleSteps = 5;
-  Chart.defaults.global.scaleStepWidth = 20;
-  Chart.defaults.global.scaleStartValue = 0;
-  Chart.defaults.global.scaleFontSize = 16;
-
-  var randomValue = function(){ return Math.round(Math.random()*100)};
-
-  // TODO: remove
-  var getPieData = function() {
-    return [
-      { value: 0, label: "" },
-      { value: 0, label: "" },
-      { value: 0, label: "" },
-      { value: 0, label: "" },
-      { value: 0, label: "" }]
-    };
-
-  var lineChartData = {
-        labels : [],
-        scaleBeginAtZero: true,
-        datasets : [{
-          label: "Total über Zeit",
-          fillColor : "rgba(151,187,220,0.4)",
-          strokeColor : "rgb(151,187,220)",
-          pointColor : "rgb(151,187,220)",
-          pointStrokeColor : "#fff",
-          pointHighlightFill : "#fff",
-          pointHighlightStroke : "rgb(151,187,220)",
-          data : []
-        }]
-      },
-      pieData = getPieData(),
-      barChartData = {
-        labels : [],
-        datasets : [{
-          //fillColor : "rgba(151,187,220,0.5)",
-          fillColor : colors,
-          strokeColor : "rgba(151,187,220,0.8)",
-          highlightFill : "rgba(151,187,220,0.75)",
-          highlightStroke : "rgba(151,187,220,1)",
-          data : []
-        }]
-      };
+  var updatePieLegend = function( index, text ){
+    var node = $("#pieLegend li")[index];
+    $(node).children(".color").css("background-color", pieColors[index] );
+    $(node).children(".text").html( text );
+  };
 
   $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
     var nextMonth = $(e.target).data("month"),
@@ -119,6 +126,8 @@ $(document).ready(function () {
       pieChart.segments[i].value = relevantData.weights[i].val;
       var val = relevantData.words[i].val;
       pieChart.segments[i].label = ( val.length > 28 ? val.substr( 0, 25 ) + "..." : val );
+
+      updatePieLegend( i, val );
     }
 
     for( var i = 0; i < barChart.datasets[0].bars.length; i++ ) {

@@ -182,3 +182,23 @@ ul.button-bar {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
 	background: linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
 }
+
+#pieLegend {
+	display: none;
+}
+#pieLegend li {
+	list-style: none;
+	width: 100%;
+	display: inline-block;
+	padding: 0;
+}
+#pieLegend li .color {
+	width: 20px;
+	height: 20px;
+	border: 1px solid #DDD;
+	margin-right: 10px;
+}
+#pieLegend li .color,
+#pieLegend li .text {
+	float: left;
+}
