@@ -36,7 +36,7 @@ if ( !isLoggedIn() ) {
 				<img src="img/uzh_logo_d_pos_web_main.jpg">
 			</div>
 
-			<h1>LQB Dateneinsicht</h1>
+			<h1>LQB Daten&shy;einsicht</h1>
 		</div>
 
 		<div class="col_12">
