@@ -155,20 +155,7 @@ $(document).ready(function () {
 
     var ctx3 = $("#chart-area3")[0].getContext("2d");
     barChart = new Chart(ctx3).Bar(barChartData, {
-      responsive: true,
-
-      // Boolean - If we want to override with a hard coded scale
-      scaleOverride: true,
-
-      // ** Required if scaleOverride is true **
-      // Number - The number of steps in a hard coded scale
-      scaleSteps: 1,
-      // Number - The value jump in the hard coded scale
-      scaleStepWidth: 100,
-      // Number - The scale starting value
-      scaleStartValue: 0,
-
-      scaleLabel : "<%= value <= 1 ? 'es könnte nicht schlimmer sein' : 'es könnte nicht besser sein' %>",
+      responsive: true
     });
 
   };
