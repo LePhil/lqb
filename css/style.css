@@ -206,3 +206,8 @@ ul.button-bar {
 .sectionTitle .smallerTitle {
 	font-weight: normal;
 }
+
+p.explanationText {
+	font-size: 1.25em;
+	line-height: 125%;
+}

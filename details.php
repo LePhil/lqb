@@ -40,7 +40,9 @@ if ( !isLoggedIn() ) {
 		</div>
 
 		<div class="col_12">
-			<p>Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebensqualitätsangaben der vergangenen 6 Monate aufgeführt.</p>
+			<p class="explanationText">
+				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebensqualitätsangaben der vergangenen 6 Monate aufgeführt.
+			</p>
 		</div>
 
 		<div class="col_12 right">
@@ -52,12 +54,16 @@ if ( !isLoggedIn() ) {
 			<canvas id="chart-area1" height="300" width="600"></canvas>
 		</div>
 		<div class="col_5">
-			<p>In dieser Grafik sehen Sie Ihren jeweiligen monatlichen Gesamtwert der persönlichen Lebensqualität (Maximalwert: 100) im Verlauf über die Zeit abgetragen.</p>
+			<p class="explanationText">
+				In dieser Grafik sehen Sie den jeweiligen monatlichen Gesamtwert Ihrer persönlichen Lebensqualität (Maximalwert: 100) im Verlauf über die Zeit.
+			</p>
 		</div>
 
 		<h3 class="sectionTitle col_12">Gewichtung: <span class="smallerTitle">Wie wichtig ist Ihnen jeder einzelne Aspekt?</span></h3>
 		<div class="col_5">
-			<p>Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.</p>
+			<p class="explanationText">
+				Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.
+			</p>
 			<ul id="pieLegend">
 				<li><div class="color"></div><div class="text"></div></li>
 				<li><div class="color"></div><div class="text"></div></li>
@@ -83,9 +89,10 @@ if ( !isLoggedIn() ) {
 			<canvas id="chart-area3" height="450" width="600"></canvas>
 		</div>
 		<div class="col_5">
-			<p>
-				Für jeden der Bereiche haben Sie zudem angegeben, wie gut es in jedem der genannten Lebensaspekte für Sie im jeweiligen Monat lief.<br>
-Die Angaben sehen Sie links für jeden der Bereiche in Form eines Balkens abgetragen.
+			<p class="explanationText">
+				Für jeden der Bereiche haben Sie zudem angegeben, wie gut es für Sie im jeweiligen Monat lief.<br>
+				Ihre Zufriedenheits-Angaben sehen Sie links für jeden der Bereiche in Form eines Balkens abgetragen.<br><br>
+				100 bedeutet, es könnte nicht besser sein, 0 bedeutet, es könnte nicht schlimmer sein.
 			</p>
 		</div>
 
