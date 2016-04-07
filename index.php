@@ -36,7 +36,7 @@ if ( isLoggedIn() ) {
 			</div>
 
 			<h1>
-				LQB Dateneinsicht
+				LQB Daten&shy;einsicht
 			</h1>
 
 		</div>
