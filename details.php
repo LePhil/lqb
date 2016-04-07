@@ -55,7 +55,7 @@ if ( !isLoggedIn() ) {
 			<p>In dieser Grafik sehen Sie Ihren jeweiligen monatlichen Gesamtwert der persönlichen Lebensqualität (Maximalwert: 100) im Verlauf über die Zeit abgetragen.</p>
 		</div>
 
-		<h3 class="sectionTitle col_12">Gewichtung: Wie wichtig ist Ihnen jeder einzelne Aspekt?</h3>
+		<h3 class="sectionTitle col_12">Gewichtung: <span class="smallerTitle">Wie wichtig ist Ihnen jeder einzelne Aspekt?</span></h3>
 		<div class="col_5">
 			<p>Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.</p>
 			<ul id="pieLegend">
@@ -74,7 +74,7 @@ if ( !isLoggedIn() ) {
       <canvas id="chart-area2" width="300" height="300"></canvas>
 		</div>
 
-		<h3 class="sectionTitle col_12">Zufriedenheit: Wie gut läuft es aktuell in jedem der genannten Aspekte?</h3>
+		<h3 class="sectionTitle col_12">Zufriedenheit: <span class="smallerTitle">Wie gut läuft es aktuell in jedem der genannten Aspekte?</span></h3>
 		<div class="col_7 canvas-holder">
 			<ul class="button-bar monthButtons">
 				<li><a class="changeMonthBtn" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
