@@ -183,9 +183,6 @@ ul.button-bar {
 	background: linear-gradient(top, rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
 }
 
-#pieLegend {
-	display: none;
-}
 #pieLegend li {
 	list-style: none;
 	width: 100%;

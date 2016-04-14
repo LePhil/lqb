@@ -268,6 +268,7 @@ $(document).ready(function () {
         pieData = _.last( totalPieData ).data;
 
         drawCharts();
+        updateGraphs();
       }
     }).fail(function( data ) {
       debugger;
