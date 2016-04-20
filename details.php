@@ -6,7 +6,6 @@ if ( !isLoggedIn() ) {
 	exit;
 }
 
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,6 +45,7 @@ if ( !isLoggedIn() ) {
 		</div>
 
 		<div class="col_12 right">
+			<a class="button" target="_blank" href="print.php">Druck-Ansicht</a>
 			<a class="button" href="php/logout.php">Abmelden</a>
 		</div>
 
