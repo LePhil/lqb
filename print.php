@@ -40,7 +40,7 @@ if ( !isLoggedIn() ) {
 
 		<h2>Ihre Lebensqualität im Gesamtwert</h2>
 		<div class="canvas-holder linechartcontainer">
-			<canvas id="chart-area1" height="300" width="600"></canvas>
+			<canvas id="chart-area1" height="250" width="400"></canvas>
 		</div>
 		<p class="explanationText">
 			In dieser Grafik sehen Sie den jeweiligen monatlichen Gesamtwert Ihrer persönlichen Lebensqualität (Maximalwert: 100) im Verlauf über die Zeit.
@@ -50,7 +50,9 @@ if ( !isLoggedIn() ) {
 		<p class="explanationText">
 			Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.
 		</p>
-    <div id="insertPieChart"></div>
+
+    <table id="pieChartTable">
+    </table>
 
 		<h2 class="sectionTitle 2">Zufriedenheit: <span class="smallerTitle">Wie gut läuft es aktuell in jedem der genannten Aspekte?</span></h2>
 		<p class="explanationText">

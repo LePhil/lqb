@@ -63,23 +63,21 @@ $(document).ready(function () {
 
   var createCharts = function() {
     _.each( months, function( m ){
-      $( '<h3>'+ getMonthName( m.id ) +'</h3>' ).insertBefore( "#insertPieChart" );
-      $( '<div class="pieChartContainer">'+
-          '<div class="canvas-holder">'+
-            '<canvas height="200" width="200" class="piechart" id="piechart_' + m.id + '"></canvas>'+
-          '</div>'+
-          '<ul class="pieLegend" id="pieLegend_' + m.id + '"><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li></ul>'+
-        '</div>' ).insertBefore( "#insertPieChart" );
+      var pieTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
+          pieChartHTML = '<div class="canvas-holder"><canvas height="150" width="150" class="piechart" id="piechart_' + m.id + '"></canvas></div>',
+          pieLegendHTML = '<ul class="pieLegend" id="pieLegend_' + m.id + '"><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li></ul>';
+
+      $("#pieChartTable").append('<tr><td colspan=2>' + pieTitleHTML + '</td></tr><tr><td>' + pieChartHTML +'</td><td>' + pieLegendHTML + '</td></tr>')
 
       $( '<h3>'+ getMonthName( m.id ) +'</h3>' ).insertBefore( "#insertBarChart" );
       $( '<div class="canvas-holder"><canvas height="300" width="600" class="barchart" id="barchart_' + m.id + '"></canvas></div>' ).insertBefore( "#insertBarChart" );
     });
   };
 
-  var updatePieLegend = function( monthIndex, index, text ){
+  var updatePieLegend = function( monthIndex, index, text, value ){
     var node = $("#pieLegend_"+ monthIndex +" li")[index];
-    $(node).children(".color").css("background-color", pieColors[index] );
-    $(node).children(".text").html( text );
+    $(node).children(".color").css("border-color", pieColors[index] );
+    $(node).children(".text").html( text + ' (' + value + '%)' );
   };
 
   var drawCharts = function() {
@@ -94,7 +92,7 @@ $(document).ready(function () {
             animationSteps: 30
           });
       _.each( pieData[i].data, function(dataPoint, relIndex){
-        updatePieLegend( m.id, relIndex, dataPoint.label );
+        updatePieLegend( m.id, relIndex, dataPoint.label, dataPoint.value );
       });
       pieCharts.push(tempPie);
 
@@ -216,10 +214,10 @@ $(document).ready(function () {
         pieData = totalPieData;
 
         drawCharts();
+
+        window.print();
       }
-    }).fail(function( data ) {
-      debugger;
-    });
+    }).fail(function( data ) {});
   };
 
   getData();

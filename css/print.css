@@ -20,19 +20,18 @@
 	padding: 0;
 }
 .pieLegend li .color {
-	width: 20px;
-	height: 20px;
-	border: 1px solid #DDD;
+	width: 0px;
+	height: 0px;
+	border: 10px solid;
 	margin-right: 10px;
+}
+
+table {
+	page-break-inside: avoid;
 }
 
 h3, h2 {
 	clear: both;
-}
-
-.pieChartContainer .canvas-holder,
-.pieChartContainer .pieLegend {
-    float: left;
 }
 
 ul.pieLegend li .color, ul.pieLegend li .text {
