@@ -101,6 +101,10 @@ $(document).ready(function () {
 
       tempBarData.datasets[0].data = bardata[i].values;
 
+      _.each( tempBarData.labels, function(val, index){
+        tempBarData.labels[index] = val.length > 15 ? val.substr( 0, 12 ) + "..." : val;
+      } );
+
       var tempBar = new Chart(tempBarCTX).Bar(tempBarData, {
             animationEasing: "easeInOutQuart",
             animationSteps: 30
