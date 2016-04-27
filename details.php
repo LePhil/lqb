@@ -35,12 +35,18 @@ if ( !isLoggedIn() ) {
 				<img src="img/uzh_logo_d_pos_web_main.jpg">
 			</div>
 
-			<h1>LQB Daten&shy;einsicht</h1>
+			<h1 class="col_8">
+				Daten&shy;einsicht Projekt "Lebens&shy;qualitäts-Barometer UZH"
+			</h1>
+
+			<div class="col_12">
+				<p class="explanationText">Leitung: Prof. Dr. Mike Martin, Dr. Christina Röcke, Universitärer Forschungs&shy;schwerpunkt "Dynamik Gesunden Alterns", in Kooperation mit: Hansruedi Schelling, Zentrum für Gerontologie, Universität Zürich</p>
+			</div>
 		</div>
 
 		<div class="col_12">
 			<p class="explanationText">
-				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebensqualitätsangaben der vergangenen 6 Monate aufgeführt.
+				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen 6 Monate aufgeführt.
 			</p>
 		</div>
 

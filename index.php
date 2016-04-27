@@ -11,7 +11,7 @@ if ( isLoggedIn() ) {
 <html>
 <head>
 	<!-- META -->
-	<title>LQB Dateneinsicht</title>
+	<title>Dateneinsicht Projekt "Lebensqualitäts-Barometer UZH"</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="description" content="" />
@@ -35,8 +35,8 @@ if ( isLoggedIn() ) {
 				<img src="img/uzh_logo_d_pos_web_main.jpg">
 			</div>
 
-			<h1>
-				LQB Daten&shy;einsicht
+			<h1 class="col_8">
+				Daten&shy;einsicht Projekt "Lebens&shy;qualitäts-Barometer UZH"
 			</h1>
 
 		</div>
