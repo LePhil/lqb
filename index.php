@@ -40,11 +40,8 @@ if ( isLoggedIn() ) {
 			</h1>
 
 			<div class="col_12">
-				<p class="explanationText">
-					Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen 6 Monate aufgeführt.
-				</p>
+				<p class="explanationText">Leitung: Prof. Dr. Mike Martin, Dr. Christina Röcke, Universitärer Forschungs&shy;schwerpunkt "Dynamik Gesunden Alterns", in Kooperation mit: Hansruedi Schelling, Zentrum für Gerontologie, Universität Zürich</p>
 			</div>
-
 		</div>
 
 		<div class="col_1"></div>
