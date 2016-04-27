@@ -39,6 +39,12 @@ if ( isLoggedIn() ) {
 				Daten&shy;einsicht Projekt "Lebens&shy;qualitäts-Barometer UZH"
 			</h1>
 
+			<div class="col_12">
+				<p class="explanationText">
+					Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen 6 Monate aufgeführt.
+				</p>
+			</div>
+
 		</div>
 
 		<div class="col_1"></div>
