@@ -40,7 +40,7 @@ if ( !isLoggedIn() ) {
 			</h1>
 
 			<div class="col_12">
-				<p class="explanationText">Leitung: Prof. Dr. Mike Martin, Dr. Christina Röcke, Universitärer Forschungs&shy;schwerpunkt "Dynamik Gesunden Alterns", in Kooperation mit: Hansruedi Schelling, Zentrum für Gerontologie, Universität Zürich</p>
+				<p class="explanationText">Leitung: Prof. Dr. Mike Martin, Dr. Christina Röcke, Universitärer Forschungs&shy;schwerpunkt "Dynamik Gesunden Alterns",<br>in Kooperation mit: Hansruedi Schelling, Zentrum für Gerontologie, Universität Zürich</p>
 			</div>
 		</div>
 
