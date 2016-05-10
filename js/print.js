@@ -61,7 +61,7 @@ $(document).ready(function () {
   //First month was November
   var getMonthName = function( lqbIndex ) { return monthNames[ (lqbIndex-1) % 12 ]; };
 
-  var createCharts = function() {
+  var createChartsAndTables = function() {
     _.each( months, function( m ){
       var pieTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
           pieChartHTML = '<div class="canvas-holder"><canvas height="150" width="150" class="piechart" id="piechart_' + m.id + '"></canvas></div>',
@@ -71,6 +71,7 @@ $(document).ready(function () {
 
       $( '<h3>'+ getMonthName( m.id ) +'</h3>' ).insertBefore( "#insertBarChart" );
       $( '<div class="canvas-holder"><canvas height="300" width="600" class="barchart" id="barchart_' + m.id + '"></canvas></div>' ).insertBefore( "#insertBarChart" );
+      $( '<table id="barChartTable_'+m.id+'" class="chartTable"><tr><th>Bereich</th><th>Wert</th></tr></table>' ).insertBefore( "#insertBarChart" );
     });
   };
 
@@ -80,9 +81,27 @@ $(document).ready(function () {
     $(node).children(".text").html( text + ' (' + value + '%)' );
   };
 
+  var fillLineChartTable = function(lineChartData) {
+    for( var i = 0; i < lineChartData.labels.length; i++ ) {
+      var m = lineChartData.labels[i],
+          v = lineChartData.datasets[0].data[i]
+      $("#lineChartTable tbody").append('<tr><td>'+m+'</td><td>'+v+'</td></tr>')
+    }
+  };
+
+  var fillBarChartTable = function(lineChartData) {
+    for( var i = 0; i < lineChartData.labels.length; i++ ) {
+      var m = lineChartData.labels[i],
+          v = lineChartData.datasets[0].data[i]
+      $("#lineChartTable tbody").append('<tr><td>'+m+'</td><td>'+v+'</td></tr>')
+    }
+  };
+
   var drawCharts = function() {
     var ctx = $("#chart-area1")[0].getContext("2d");
     lineChart = new Chart(ctx).Line( lineChartData );
+
+    fillLineChartTable(lineChartData);
 
     var i = 0;
     _.each( months, function( m ) {
@@ -102,6 +121,7 @@ $(document).ready(function () {
       tempBarData.datasets[0].data = bardata[i].values;
 
       _.each( tempBarData.labels, function(val, index){
+        $("#barChartTable_"+m.id+" tbody").append('<tr><td>'+ val +'</td><td>'+bardata[i].values[index]+'</td></tr>')
         tempBarData.labels[index] = val.length > 15 ? val.substr( 0, 12 ) + "..." : val;
       } );
 
@@ -212,7 +232,7 @@ $(document).ready(function () {
 
         });
 
-        createCharts();
+        createChartsAndTables();
 
         bardata = totalBarData;
         pieData = totalPieData;

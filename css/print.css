@@ -40,4 +40,25 @@ ul.pieLegend li .color, ul.pieLegend li .text {
 
 .canvas-holder {
 	text-align: left;
+	float: left;
+}
+
+.explanationText {
+	clear: both;
+	margin-top: 10px;
+}
+
+.chartTable {
+	border-collapse: collapse;
+	margin-left: 10px;
+	margin-top: 20px;
+}
+
+.chartTable th,
+.chartTable td {
+	text-align: left;
+	padding: 0 10px;
+}
+.chartTable tr {
+	border-bottom: 1px solid #DDD;
 }

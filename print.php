@@ -42,6 +42,14 @@ if ( !isLoggedIn() ) {
 		<div class="canvas-holder linechartcontainer">
 			<canvas id="chart-area1" height="250" width="400"></canvas>
 		</div>
+
+		<table id="lineChartTable" class="chartTable">
+			<tr>
+				<th>Monat</th>
+				<th>Lebensqualität</th>
+			</tr>
+		</table>
+
 		<p class="explanationText">
 			In dieser Grafik sehen Sie den jeweiligen monatlichen Gesamtwert Ihrer persönlichen Lebensqualität (Maximalwert: 100) im Verlauf über die Zeit.
 		</p>

@@ -31,17 +31,19 @@ if ( isLoggedIn() ) {
 
 	<div class="col_12" style="margin-top:100px;">
 		<div class="tab-content">
+
+			<h1 class="col_12">
+				Daten&shy;einsicht Projekt "Lebensqualitäts-Barometer UZH"
+			</h1>
+
 			<div class="col_4">
 				<img src="img/uzh_logo_d_pos_web_main.jpg">
 			</div>
 
-			<h1 class="col_8">
-				Daten&shy;einsicht Projekt "Lebens&shy;qualitäts-Barometer UZH"
-			</h1>
-
-			<div class="col_12">
+			<div class="col_8">
 				<p class="explanationText">Leitung: Prof. Dr. Mike Martin, Dr. Christina Röcke, Universitärer Forschungs&shy;schwerpunkt "Dynamik Gesunden Alterns",<br>in Kooperation mit: Hansruedi Schelling, Zentrum für Gerontologie, Universität Zürich</p>
 			</div>
+
 		</div>
 
 		<div class="col_1"></div>
