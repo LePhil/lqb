@@ -271,7 +271,7 @@ $(document).ready(function () {
         updateGraphs();
       }
     }).fail(function( data ) {
-      debugger;
+      alert("Ein Fehler ist aufgetreten. Bitte laden Sie die Seite neu oder melden Sie sich bei der Versuchsleitung.");
     });
   };
 
