@@ -65,13 +65,13 @@ $(document).ready(function () {
     _.each( months, function( m ){
       var pieTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
           pieChartHTML = '<div class="canvas-holder"><canvas height="150" width="150" class="piechart" id="piechart_' + m.id + '"></canvas></div>',
-          pieLegendHTML = '<ul class="pieLegend" id="pieLegend_' + m.id + '"><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li></ul>';
+          pieLegendHTML = '<ul class="pieLegend" id="pieLegend_' + m.id + '"><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li></ul>',
+          barTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
+          barChartHTML = '<div class="canvas-holder"><canvas height="200" width="400" class="barchart" id="barchart_' + m.id + '"></canvas></div>',
+          barLegendHTML = '<table id="barChartTable_'+m.id+'" class="chartTable"><tr><th>Bereich</th><th>Wert</th></tr></table>';
 
-      $("#pieChartTable").append('<tr><td colspan=2>' + pieTitleHTML + '</td></tr><tr><td>' + pieChartHTML +'</td><td>' + pieLegendHTML + '</td></tr>')
-
-      $( '<h3>'+ getMonthName( m.id ) +'</h3>' ).insertBefore( "#insertBarChart" );
-      $( '<div class="canvas-holder"><canvas height="300" width="600" class="barchart" id="barchart_' + m.id + '"></canvas></div>' ).insertBefore( "#insertBarChart" );
-      $( '<table id="barChartTable_'+m.id+'" class="chartTable"><tr><th>Bereich</th><th>Wert</th></tr></table>' ).insertBefore( "#insertBarChart" );
+      $('<table><tr><td colspan=2>' + pieTitleHTML + '</td></tr><tr><td>' + pieChartHTML +'</td><td>' + pieLegendHTML + '</td></tr></table>').insertBefore("#insertPieChart")
+      $('<table><tr><td colspan=2>' + barTitleHTML + '</td></tr><tr><td>' + barChartHTML +'</td><td>' + barLegendHTML + '</td></tr></table>').insertBefore("#insertBarChart")
     });
   };
 

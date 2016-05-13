@@ -62,3 +62,7 @@ ul.pieLegend li .color, ul.pieLegend li .text {
 .chartTable tr {
 	border-bottom: 1px solid #DDD;
 }
+
+.sectionTitle {
+	page-break-before: always;
+}

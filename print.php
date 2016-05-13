@@ -59,8 +59,7 @@ if ( !isLoggedIn() ) {
 			Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.
 		</p>
 
-    <table id="pieChartTable">
-    </table>
+    <div id="insertPieChart"></div>
 
 		<h2 class="sectionTitle 2">Zufriedenheit: <span class="smallerTitle">Wie gut läuft es aktuell in jedem der genannten Aspekte?</span></h2>
 		<p class="explanationText">
