@@ -50,7 +50,7 @@ if ( isLoggedIn() ) {
 		<div class="col_10">
 			<p class="explanationText">
 				Herzlich willkommen bei der Dateneinsicht der Studie "Lebensqualitätsbarometer"!<br><br>
-				Hier können Sie Ihre Daten aus der Studie einsehen. Aus Sicherheits- und Datenschutzgründen müssen Sie sich zuerst mit Ihrem <b>Geburtsdatum</b> (z.B. 28.04.1976) und ihrem persönlichen <b>Zugangscode</b> anmelden. Der persönliche Zugangscode umfasst 5 Zeichen und ist derselbe, den Sie auch beim monatlichen Fragebogen benutzen.
+				Hier können Sie Ihre Daten aus der Studie einsehen. Aus Sicherheits- und Datenschutzgründen müssen Sie sich zuerst mit Ihrem <b>Geburtsdatum</b> und ihrem persönlichen <b>Zugangscode</b> anmelden. Der persönliche Zugangscode umfasst 5 Zeichen und ist derselbe, den Sie auch beim monatlichen Fragebogen benutzen.
 			</p>
 		</div>
 
