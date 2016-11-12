@@ -31,7 +31,7 @@ if ( !isLoggedIn() ) {
 <div class="grid">
 	<div class="col_12" style="margin-top:100px;">
 		<div class="tab-content">
-			
+
 			<h1 class="col_12">
 				Daten&shy;einsicht Projekt "Lebensqualitäts-Barometer UZH"
 			</h1>

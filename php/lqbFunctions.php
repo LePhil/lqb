@@ -20,4 +20,18 @@ function goToIndex() {
   header('Location: index.php');
 }
 
+// MINI ADMIN PANEL
+function isAdmin() {
+  session_start();
+  return isset( $_SESSION['loggedin_admin'] );
+}
+
+function goToAdminIndex() {
+  header('Location: /upload/index.php');
+}
+
+function goToService() {
+  header('Location: /upload/service.php');
+}
+
 ?>
