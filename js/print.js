@@ -59,7 +59,11 @@ $(document).ready(function () {
   Chart.defaults.global.scaleFontSize = 16;
 
   //First month was November
-  var getMonthName = function( lqbIndex ) { return monthNames[ (lqbIndex-1) % 12 ]; };
+  var getMonthName = function( lqbIndex ) {
+    var year = (lqbIndex-(lqbIndex%12))/12;
+    year = lqbIndex%12 > 2 ? year+1 : year;
+    return monthNames[ (lqbIndex-1) % 12 ] + " '" + (15+year);
+  };
 
   var createChartsAndTables = function() {
     _.each( months, function( m ){
@@ -191,7 +195,7 @@ $(document).ready(function () {
         });
 
         // limit it to the last 6 months
-        months = _.last( months, 6 );
+        //months = _.last( months, 6 );
 
         _.each( months, function(m) {
           // LINECHART

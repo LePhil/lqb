@@ -60,7 +60,11 @@ $(document).ready(function () {
   Chart.defaults.global.scaleFontSize = 16;
 
   //First month was November
-  var getMonthName = function( lqbIndex ) { return monthNames[ (lqbIndex-1) % 12 ]; };
+  var getMonthName = function( lqbIndex ) {
+    var year = (lqbIndex-(lqbIndex%12))/12;
+    year = lqbIndex%12 > 2 ? year+1 : year;
+    return monthNames[ (lqbIndex-1) % 12 ] + " '" + (15+year);
+  };
   var getShortMonthName = function( lqbIndex ) { return monthNamesShort[ (lqbIndex-1) % 12 ]; };
 
   var createMonthButtons = function() {
@@ -216,11 +220,7 @@ $(document).ready(function () {
                  _.any( m.words, function(w){ return _.isEmpty( w.val.trim() ); });
         });
 
-        // limit it to the last 6 months
-        months = _.last( months, 6 );
-
         currentMonth = _.max( months, function(m){ return m.id; });
-
         _.each( months, function(m) {
           // LINECHART
           if ( m.result && parseInt( m.result ) ) {

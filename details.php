@@ -48,7 +48,7 @@ if ( !isLoggedIn() ) {
 
 		<div class="col_12">
 			<p class="explanationText">
-				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen 6 Monate aufgeführt.
+				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen Monate aufgeführt.
 			</p>
 		</div>
 

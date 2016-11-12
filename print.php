@@ -35,7 +35,7 @@ if ( !isLoggedIn() ) {
 		<h1>LQB Daten&shy;einsicht</h1>
 
 		<p class="explanationText">
-			Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebensqualitätsangaben der vergangenen 6 Monate aufgeführt.
+			Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebensqualitätsangaben der vergangenen Monate aufgeführt.
 		</p>
 
 		<h2>Ihre Lebensqualität im Gesamtwert</h2>
