@@ -15,10 +15,8 @@ $(document).ready(function () {
       barColorsLight = [ "rgba(255, 0, 0, 0.4)", "rgba(204,255,0,0.4)", "rgba(0, 255, 102, 0.4)", "rgba(0, 102, 255, 0.4)", "rgba(204, 0, 255, 0.4)" ],
       lineChartData = {
         labels : [],
-        scaleBeginAtZero: true,
         datasets : [{
-          label: "Total über Zeit",
-          fillColor : "rgba(151,187,220,0.4)",
+          backgroundColor : "rgba(151,187,220,0.4)",
           strokeColor : "rgb(151,187,220)",
           pointColor : "rgb(151,187,220)",
           pointStrokeColor : "#fff",
@@ -28,21 +26,19 @@ $(document).ready(function () {
         }]
       },
       pieData = function() {
-        var data = [];
-        for( var i = 0; i < nrOfEntries; i++ ) {
-          data.push({
-            value: 0,
-            label: "",
-            color: pieColors[i],
-            highlight: pieColorsLight[i]
-          });
-        }
-        return data;
+        return {
+          labels: new Array(nrOfEntries),
+          datasets: [{
+            data: new Array(nrOfEntries),
+            backgroundColor: pieColors,
+            hoverBackgroundColor: pieColorsLight
+          }]
+        };
       }(),
       barChartData = {
         labels : [],
         datasets : [{
-          fillColor : barColors,
+          backgroundColor : barColors,
           strokeColor : "rgba(151,187,220,0.8)",
           highlightFill : barColorsLight,
           highlightStroke : "rgba(151,187,220,1)",
@@ -50,14 +46,13 @@ $(document).ready(function () {
         }]
       };
 
-  Chart.defaults.global.animation = true;
-  Chart.defaults.global.animationSteps = 30;
-  Chart.defaults.global.animationEasing = "easeInOutQuart";
+  Chart.defaults.global.animation.easing = "easeInOutQuart";
   Chart.defaults.global.scaleOverride = true;
   Chart.defaults.global.scaleSteps = 5;
   Chart.defaults.global.scaleStepWidth = 20;
   Chart.defaults.global.scaleStartValue = 0;
   Chart.defaults.global.scaleFontSize = 16;
+  Chart.defaults.global.hover.mode = "nearest";
 
   //First month was November
   var getMonthName = function( lqbIndex ) {
@@ -126,19 +121,21 @@ $(document).ready(function () {
   var updateGraphs = function() {
     var relevantData = _.find( months, function(m){return m.id === currentMonth; });
 
-    for( var i = 0; i < pieChart.segments.length; i++ ) {
-      pieChart.segments[i].value = relevantData.weights[i].val;
+    for( var i = 0; i < pieChart.data.datasets[0].data.length; i++ ) {
+      pieChart.data.datasets[0].data[i] = relevantData.weights[i].val;
       var val = relevantData.words[i].val;
-      pieChart.segments[i].label = ( val.length > 28 ? val.substr( 0, 25 ) + "..." : val );
+      pieChart.data.labels[i] = ( val.length > 28 ? val.substr( 0, 25 ) + "..." : val );
 
+      // TODO: use native legend!
       updatePieLegend( i, val );
     }
 
-    for( var i = 0; i < barChart.datasets[0].bars.length; i++ ) {
-      barChart.datasets[0].bars[i].value = relevantData.values[i].val;
+    for( var i = 0; i < barChart.data.datasets[0].data.length; i++ ) {
+      barChart.data.datasets[0].data[i] = +relevantData.values[i].val;
       var val = relevantData.words[i].val;  // make label for bar chart max. 15 chars
-      barChart.scale.xLabels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
-      barChart.datasets[0].bars[i].label = relevantData.words[i].val;
+      // wat
+      //barChart.scale.xLabels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
+      barChart.data.labels[i] = relevantData.words[i].val;
     }
 
     barChart.update();
@@ -147,19 +144,51 @@ $(document).ready(function () {
 
   var drawCharts = function() {
     var ctx = $("#chart-area1")[0].getContext("2d");
-    lineChart = new Chart(ctx).Line(lineChartData, {
-      responsive: true
+    lineChart = new Chart(ctx, {
+      type: 'line',
+      data: lineChartData,
+      options: {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
     });
 
     var ctx2 = $("#chart-area2")[0].getContext("2d");
-    pieChart = new Chart(ctx2).Pie(pieData, {
-      animationEasing: "easeInOutQuart",
-      animationSteps: 30
+    pieChart = new Chart(ctx2, {
+      type: 'pie',
+      data: pieData,
+      options: {
+        Easing: "easeInOutQuart",
+        animationSteps: 30
+      }
     });
 
     var ctx3 = $("#chart-area3")[0].getContext("2d");
-    barChart = new Chart(ctx3).Bar(barChartData, {
-      responsive: true
+    barChart = new Chart(ctx3, {
+      type: 'bar',
+      data: barChartData,
+      options: {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
     });
 
   };
@@ -265,7 +294,12 @@ $(document).ready(function () {
 
         barChartData.labels = _.last( totalBarData ).labels;
         barChartData.datasets[0].data = _.last( totalBarData ).values;
-        pieData = _.last( totalPieData ).data;
+
+        // Fill initial month for bar chart
+        for(var i = 0; i < nrOfEntries; i++) {
+          pieData.labels[i] = _.last( totalPieData ).data[i].label;
+          pieData.datasets[0].data[i] = +_.last( totalPieData ).data[i].value;
+        }
 
         drawCharts();
         updateGraphs();
