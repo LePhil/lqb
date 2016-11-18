@@ -46,6 +46,7 @@ $(document).ready(function () {
         }]
       };
 
+  Chart.defaults.global.animation.duration = 400;
   Chart.defaults.global.animation.easing = "easeInOutQuart";
   Chart.defaults.global.scaleOverride = true;
   Chart.defaults.global.scaleSteps = 5;
@@ -125,17 +126,15 @@ $(document).ready(function () {
       pieChart.data.datasets[0].data[i] = relevantData.weights[i].val;
       var val = relevantData.words[i].val;
       pieChart.data.labels[i] = ( val.length > 28 ? val.substr( 0, 25 ) + "..." : val );
-
-      // TODO: use native legend!
       updatePieLegend( i, val );
     }
 
     for( var i = 0; i < barChart.data.datasets[0].data.length; i++ ) {
       barChart.data.datasets[0].data[i] = +relevantData.values[i].val;
       var val = relevantData.words[i].val;  // make label for bar chart max. 15 chars
-      // wat
+      debugger;
       //barChart.scale.xLabels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
-      barChart.data.labels[i] = relevantData.words[i].val;
+      barChart.data.labels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
     }
 
     barChart.update();
@@ -157,6 +156,11 @@ $(document).ready(function () {
             ticks: {
               beginAtZero: true
             }
+          }],
+          xAxes: [{
+            ticks: {
+              autoSkip: false /* show all labels, always */
+            }
           }]
         }
       }
@@ -168,7 +172,10 @@ $(document).ready(function () {
       data: pieData,
       options: {
         Easing: "easeInOutQuart",
-        animationSteps: 30
+        animationSteps: 30,
+        legend: {
+          display: false
+        }
       }
     });
 
@@ -184,7 +191,9 @@ $(document).ready(function () {
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              min: 0,
+              max: 100
             }
           }]
         }
