@@ -69,8 +69,9 @@ $(document).ready(function () {
       $(".monthButtons").hide();
     } else {
       _.each( months, function( m ){
-        var classes = 'changeMonthBtn month'+ m.id +' '+ (m.id === currentMonth ? "activeMonth" : "");
-        $( '<li><a class="'+ classes +'" data-month="'+ m.id +'" href="">'+ getShortMonthName( m.id ) +'</a></li>' ).insertBefore( ".monthButtons li:last-child" );
+        $( '<li class="' + (m.id === currentMonth ? "activeMonth" : "") + '">\
+              <a class="changeMonthBtn month'+ m.id +'" data-month="'+ m.id +'" href="">'+ getMonthName( m.id ) +'</a>\
+            </li>' ).insertBefore( ".monthButtons li:last-child" );
       });
     }
   };
@@ -85,7 +86,6 @@ $(document).ready(function () {
     var nextMonth = $(e.target).data("month"),
         lastMonthID = _.last( months ).id,
         firstMonthID = _.first( months ).id;
-
 
     if ( nextMonth === undefined ) { // in case the icon on prev/next recognizes the click
       nextMonth = $(e.target).parent().data("month");
@@ -111,7 +111,7 @@ $(document).ready(function () {
     }
 
     $(".activeMonth").removeClass("activeMonth");
-    $(".month" + currentMonth).addClass("activeMonth");
+    $(".month" + currentMonth).parent().addClass("activeMonth");
 
     updateGraphs();
 
@@ -132,8 +132,7 @@ $(document).ready(function () {
     for( var i = 0; i < barChart.data.datasets[0].data.length; i++ ) {
       barChart.data.datasets[0].data[i] = +relevantData.values[i].val;
       var val = relevantData.words[i].val;  // make label for bar chart max. 15 chars
-      debugger;
-      //barChart.scale.xLabels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
+      // TODO: allow full text in tooltip
       barChart.data.labels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
     }
 
