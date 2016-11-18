@@ -24,6 +24,7 @@ if ( isLoggedIn() ) {
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/kickstart.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/tracker.js"></script>
 </head>
 <body>
 <div class="grid">
