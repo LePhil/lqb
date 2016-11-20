@@ -54,6 +54,8 @@ $(document).ready(function () {
   Chart.defaults.global.scaleStartValue = 0;
   Chart.defaults.global.scaleFontSize = 16;
   Chart.defaults.global.hover.mode = "nearest";
+  Chart.defaults.global.tooltips.titleFontSize = 18;
+  Chart.defaults.global.tooltips.bodyFontSize = 18;
 
   //First month was November
   var getMonthName = function( lqbIndex ) {
