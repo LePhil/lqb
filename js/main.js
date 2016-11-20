@@ -26,22 +26,26 @@ $(document).ready(function () {
 
   $("#loginBtn").click( function() {
     $(".notice").hide();
+    var participantCode = $("#code").val();
+
+    LQBTracker.setCode( participantCode );
 
     if ( checkDate() && checkCode() ) {
       $.ajax({
         url: "php/checkLogin.php",
         data: {
-          code: $("#code").val(),
+          code: participantCode,
           birthdate_day: parseInt( $("#birthdate_day").val() ),
           birthdate_month: parseInt( $("#birthdate_month").val() ),
           birthdate_year: parseInt( $("#birthdate_year").val() )
         },
         type: "POST",
         success: function( data ){
-          console.log( data );
           if ( data === "true" ) {
+            LQBTracker.log("login successfull");
             window.location = "details.php";
           } else {
+            LQBTracker.log("login failed");
             $("#errorNotification").show();
           }
         }

@@ -26,6 +26,7 @@ if ( !isLoggedIn() ) {
 	<script type="text/javascript" src="js/chartjs/Chart.js"></script>
 	<script type="text/javascript" src="js/underscore-min.js"></script>
 	<script type="text/javascript" src="js/details.js"></script>
+	<script type="text/javascript" src="js/tracker.js"></script>
 </head>
 <body>
 <div class="grid">

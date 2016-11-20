@@ -1,23 +1,50 @@
-$(function() {
-  var LQBTracker = {
-    log: function( event ) {
-      console.log( new Date() + ": " + event );
-    }
+var LQBTracker = (function () {
+  var code = false;
+
+  var setCode = function( newCode ) {
+    localStorage.setItem('LQB-Code', newCode);
+    code = newCode;
   };
 
-  LQBTracker.log("init");
+  var forgetCode = function() {
+    localStorage.clear();
+  };
 
-  /* MAIN */
-  $("#loginBtn").click(function (e) {
-    LQBTracker.log("loginBtn clicked");
-  });
+  var log = function( eventName ) {
+    $.ajax({
+      url: 'php/track.php',
+      data: {
+        event: eventName,
+        origin: window.location.pathname,
+        code: code ? code : null
+      },
+      type: 'post',
+      success: function(output) {}
+    });
+  };
 
-  /* DETAILS */
-  $("#printBtn").click(function (e) {
-    LQBTracker.log("printBtn clicked");
-  });
+  return {
+    log: log,
+    setCode: setCode,
+    forgetCode: forgetCode
+  }
+})();
+
+if (localStorage.getItem('LQB-Code')) {
+  LQBTracker.setCode( localStorage.getItem('LQB-Code') );
+}
+
+$(function() {
+  LQBTracker.log("visit");
 
   $("#logoutBtn").click(function (e) {
-    LQBTracker.log("logoutBtn clicked");
+    LQBTracker.log("logout");
+    LQBTracker.forgetCode();
+  });
+  $("#printBtn").click(function (e) {
+    LQBTracker.log("print opened");
+  });
+  $(".changeMonthBtn").click(function (e) {
+    LQBTracker.log("month changed");
   });
 });
