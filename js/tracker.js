@@ -27,7 +27,7 @@ var LQBTracker = (function () {
     log: log,
     setCode: setCode,
     forgetCode: forgetCode
-  }
+  };
 })();
 
 if (localStorage.getItem('LQB-Code')) {
