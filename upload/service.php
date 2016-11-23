@@ -31,7 +31,7 @@ if ( !isAdmin() ) {
 
 	<div class="col_12" style="margin-top:100px;">
 		<div class="tab-content">
-			<h1 class="col_12">Success!</h1>
+			<h4 class="col_12">Admin-Bereich</h4>
 		</div>
 
 	</div>
@@ -40,6 +40,25 @@ if ( !isAdmin() ) {
     <a class="button" href="../php/logout.php">Abmelden</a>
   </div>
 
+	<!-- Uplaoad -->
+	<div class="col_12">
+		<h4>Upload</h4>
+		<p>Weiteren Monat hochladen:<p>
+
+		<form class="vertical col_12">
+			<div class="col_6">
+				<label for="monthNo">Monat <span class="right">1-999</span></label>
+				<input id="monthNo" type="number" min="1" />
+
+				<label for="file">Datei <span class="right">.csv</span></label>
+				<input id="file" type="file" class="file">
+				<button type="submit">Submit</button>
+			</div>
+
+		</form>
+	</div>
+
+	<!-- Tracking -->
 	<div class="col_12">
 		<h4>Tracking</h4>
 		<ul id="tracking" class="alt">
@@ -53,7 +72,7 @@ if ( !isAdmin() ) {
 	</div>
 
 	<div class="col_6 right">
-		<a class="button" id="downloadAll" href="../php/getAllTracking.php" target="_blank">Alles herunterladen (CSV)</a>
+		<a class="button" id="downloadAll" href="../php/getAllTracking.php" target="_blank">Alle Daten herunterladen (CSV)</a>
 	</div>
 
 </div>
