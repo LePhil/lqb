@@ -1,5 +1,6 @@
 var LQBViz = (function () {
   var nrOfEntries = 5,
+      selectedMonth,
       monthNames = [ "November", "Dezember", "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober" ],
       monthNamesShort = [ "Nov.", "Dez.", "Jan.", "Feb", "März", "April", "Mai", "Juni", "Juli", "Aug.", "Sept.", "Okt." ],
       pieColors =      [ "#F00", "#CF0", "#0F6", "#06F", "#C0F" ],
@@ -7,7 +8,10 @@ var LQBViz = (function () {
       barColors =      [ "rgba(255, 0, 0, 0.6)", "rgba(204,255,0,0.6)", "rgba(0, 255, 102, 0.6)", "rgba(0, 102, 255, 0.6)", "rgba(204, 0, 255, 0.6)" ],
       barColorsLight = [ "rgba(255, 0, 0, 0.4)", "rgba(204,255,0,0.4)", "rgba(0, 255, 102, 0.4)", "rgba(0, 102, 255, 0.4)", "rgba(204, 0, 255, 0.4)" ],
       months = [],
-      chartData;
+      chartData,
+      lineChart,
+      pieChart,
+      barChart;
 
 
   var json2Months = function ( data ) {
@@ -65,7 +69,10 @@ var LQBViz = (function () {
   };
 
   var getMonths = function () { return months; };
-  var setMonths = function ( jsonData ) { months = json2Months( jsonData ); };
+  var setMonths = function ( jsonData ) {
+    months = json2Months( jsonData );
+    selectedMonth = _.last( months );
+  };
 
   var getNrOfEntriesPerMonth = function () { return nrOfEntries; };
 
@@ -121,7 +128,7 @@ var LQBViz = (function () {
 
   var updatePieLegend = function( index, text ){
     var node = $("#pieLegend li")[index];
-    $(node).children(".color").css("background-color", this.getColors( "pie", false, index ) );
+    $(node).children(".color").css("background-color", getColors( "pie", false, index ) );
     $(node).children(".text").html( text );
   };
 
@@ -133,32 +140,26 @@ var LQBViz = (function () {
     if ( months.length <= 1 ) {
       $(".monthButtons").hide(); // If there's only one (or zero) months, it's useless to draw the buttons
     } else {
-      var currentMonthID = this.getLastMonth().id;
-
       _.each( months, function ( m ) {
-        $( '<li class="' + (m.id === currentMonthID ? "activeMonth" : "") + '">\
-              <a class="changeMonthBtn month'+ m.id +'" data-month="'+ m.id +'" href="">'+ this.getMonthName( m.id ) +'</a>\
+        $( '<li class="' + (m.id === selectedMonth.id ? "activeMonth" : "") + '">\
+              <a class="changeMonthBtn month'+ m.id +'" data-month="'+ m.id +'" href="">'+ getMonthName( m.id ) +'</a>\
             </li>' ).insertBefore( ".monthButtons li:last-child" );
       }, this );
     }
   };
 
-  var getMonthByID = function ( id ) { return _.find( months, function(m){return m.id === id; }); };
-  var getLastMonth = function () { return _.last( months ); };
-  var getFirstMonth = function () { return _.first( months ); };
-
-  var getNextMonth = function ( currentMonthID ) {
-    if ( currentMonthID === this.getLastMonth().id ) {
-      return this.getFirstMonth();
+  var getNextMonth = function () {
+    if ( selectedMonth === _.last( months ) ) {
+      return _.first( months );
     } else {
-      return _.find( months, function(m){ return m.id > currentMonthID; });
+      return _.find( months, function(m){ return m.id > selectedMonth.id; });
     }
   };
-  var getPrevMonth = function ( currentMonthID ) {
-    if ( currentMonthID === this.getFirstMonth().id ) {
-      return this.getLastMonth();
+  var getPrevMonth = function () {
+    if ( selectedMonth === _.first( months ) ) {
+      return _.last( months );
     } else {
-      return _.last( _.filter( months, function(m){ return m.id < currentMonthID; } ) );
+      return _.last( _.filter( months, function(m){ return m.id < selectedMonth.id; } ) );
     }
   };
 
@@ -246,72 +247,38 @@ var LQBViz = (function () {
     chartData.bar.datasets[0].data = _.last( totalBarData ).values;
 
     // Fill initial month for bar chart
-    for(var i = 0; i < LQBViz.getNrOfEntriesPerMonth(); i++) {
+    for(var i = 0; i < nrOfEntries; i++) {
       chartData.pie.labels[i] = _.last( totalPieData ).data[i].label;
       chartData.pie.datasets[0].data[i] = +_.last( totalPieData ).data[i].value;
     }
   };
 
-  var getChartData = function ( type ) { return chartData[type]; };
-
-  return {
-    getMonthName: getMonthName,
-    getMonthNameShort: getMonthNameShort,
-    getColors: getColors,
-    getNrOfEntriesPerMonth: getNrOfEntriesPerMonth,
-    get2dContext: get2dContext,
-    updatePieLegend: updatePieLegend,
-    truncate: truncate,
-    createMonthButtons: createMonthButtons,
-    getFirstMonth: getFirstMonth,
-    getLastMonth: getLastMonth,
-    getMonthByID: getMonthByID,
-    getNextMonth: getNextMonth,
-    getPrevMonth: getPrevMonth,
-    getMonths: getMonths,
-    setMonths: setMonths,
-    createGraphData: createGraphData,
-    getChartData: getChartData
-  };
-})();
-
-$(document).ready(function () {
-  var currentMonth,
-      lineChart,
-      pieChart,
-      barChart;
-
-  $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
+  var handleMonthChange = function ( e ) {
     var clickedBtnAttribute = $(e.target).data("month") || $(e.target).parent().data("month") || $(e.originalEvent.currentTarget).data("month");
 
     if ( clickedBtnAttribute === "next" ) {
-      currentMonth = LQBViz.getNextMonth( currentMonth ).id;
+      selectedMonth = getNextMonth();
     } else if ( clickedBtnAttribute === "prev" ) {
-      currentMonth = LQBViz.getPrevMonth( currentMonth ).id;
+      selectedMonth = getPrevMonth();
     } else {
-      currentMonth = +clickedBtnAttribute;
+      selectedMonth = _.find( months, function(m){return m.id === +clickedBtnAttribute; });
     }
 
     $(".activeMonth").removeClass("activeMonth");
-    $(".month" + currentMonth).parent().addClass("activeMonth");
+    $(".month" + selectedMonth.id).parent().addClass("activeMonth");
 
     updateGraphs();
-
-    e.stopPropagation();
-    return false;
-  });
+  };
 
   var updateGraphs = function() {
-    var relevantData = LQBViz.getMonthByID( currentMonth );
+    for( var i = 0; i < nrOfEntries; i++ ) {
+      pieChart.data.datasets[0].data[i] = selectedMonth.weights[i].val;
+      var val = selectedMonth.words[i].val;
+      pieChart.data.labels[i] = truncate(val, 28);
+      updatePieLegend( i, val );
 
-    for( var i = 0; i < LQBViz.getNrOfEntriesPerMonth(); i++ ) {
-      pieChart.data.datasets[0].data[i] = relevantData.weights[i].val;
-      var val = relevantData.words[i].val;
-      pieChart.data.labels[i] = LQBViz.truncate(val, 28);
-      LQBViz.updatePieLegend( i, val );
-
-      barChart.data.datasets[0].data[i] = +relevantData.values[i].val;
-      barChart.data.labels[i] = LQBViz.truncate(val, 15);
+      barChart.data.datasets[0].data[i] = +selectedMonth.values[i].val;
+      barChart.data.labels[i] = truncate(val, 15);
       // TODO: allow full text in tooltip
     }
 
@@ -320,9 +287,9 @@ $(document).ready(function () {
   };
 
   var drawCharts = function() {
-    lineChart = new Chart( LQBViz.get2dContext("chart-area1"), {
+    lineChart = new Chart( get2dContext("chart-area1"), {
       type: "line",
-      data: LQBViz.getChartData("line"),
+      data: chartData.line,
       options: {
         responsive: true,
         legend: { display: false },
@@ -332,20 +299,18 @@ $(document).ready(function () {
         }
       }
     });
-
-    pieChart = new Chart( LQBViz.get2dContext("chart-area2"), {
+    pieChart = new Chart( get2dContext("chart-area2"), {
       type: "pie",
-      data: LQBViz.getChartData("pie"),
+      data: chartData.pie,
       options: {
         Easing: "easeInOutQuart",
         animationSteps: 30,
         legend: { display: false }
       }
     });
-
-    barChart = new Chart( LQBViz.get2dContext("chart-area3"), {
+    barChart = new Chart( get2dContext("chart-area3"), {
       type: "bar",
-      data: LQBViz.getChartData("bar"),
+      data: chartData.bar,
       options: {
         responsive: true,
         legend: { display: false },
@@ -354,27 +319,35 @@ $(document).ready(function () {
         }
       }
     });
-
   };
+
+  var processData = function ( rawData ) {
+    setMonths( rawData );
+    createGraphData();
+    createMonthButtons();
+    drawCharts();
+    updateGraphs();
+  };
+
+  return {
+    handleMonthChange: handleMonthChange,
+    processData: processData
+  };
+})();
+
+$(document).ready(function () {
+  $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
+    LQBViz.handleMonthChange( e );
+    e.stopPropagation();
+    return false;
+  });
 
   var getData = function () {
     $.ajax({
       url: "php/getData.php",
       type: "POST",
       dataType : 'json',
-      success: function ( data ) {
-
-        LQBViz.setMonths( data );
-
-        LQBViz.createGraphData();
-
-        // take last available month as the currently selected month
-        currentMonth = LQBViz.getLastMonth().id;
-        LQBViz.createMonthButtons();
-
-        drawCharts();
-        updateGraphs();
-      }
+      success: LQBViz.processData
     }).fail(function( data ) {
       alert("Ein Fehler ist aufgetreten. Bitte laden Sie die Seite neu oder melden Sie sich bei der Versuchsleitung.");
     });
