@@ -5,11 +5,68 @@ var LQBViz = (function () {
       pieColors =      [ "#F00", "#CF0", "#0F6", "#06F", "#C0F" ],
       pieColorsLight = [ "rgba(255, 0, 0, 0.75)", "rgba(204,255,0,0.75)", "rgba(0, 255, 102, 0.75)", "rgba(0, 102, 255, 0.75)", "rgba(204, 0, 255, 0.75)" ],
       barColors =      [ "rgba(255, 0, 0, 0.6)", "rgba(204,255,0,0.6)", "rgba(0, 255, 102, 0.6)", "rgba(0, 102, 255, 0.6)", "rgba(204, 0, 255, 0.6)" ],
-      barColorsLight = [ "rgba(255, 0, 0, 0.4)", "rgba(204,255,0,0.4)", "rgba(0, 255, 102, 0.4)", "rgba(0, 102, 255, 0.4)", "rgba(204, 0, 255, 0.4)" ];
+      barColorsLight = [ "rgba(255, 0, 0, 0.4)", "rgba(204,255,0,0.4)", "rgba(0, 255, 102, 0.4)", "rgba(0, 102, 255, 0.4)", "rgba(204, 0, 255, 0.4)" ],
+      months = [];
 
-  var getNrOfEntriesPerMonth = function () {
-    return nrOfEntries;
+
+  var json2Months = function ( data ) {
+    var monthsArray = [];
+
+    _.each(data, function(val, key) {
+      if ( key.indexOf("_t") <0 ) return;
+      var group = parseInt( key.substr(key.lastIndexOf("_t")+2) ),
+          month = _.find( monthsArray, function( m ) { return m.id === group; });
+
+      if ( !month ) { // create new month if not found yet
+        month = {
+          id: group,
+          words: [],
+          values: [],
+          weights: [],
+          result: 0
+        };
+        monthsArray.push( month );
+      }
+
+      // put into correct array
+      if ( key.indexOf( "Zufriedenheit" ) >= 0 ) {
+        month.values.push({
+          id: key.substr( key.indexOf("_t"+group) -1, 1),
+          val: val ? val.trim() : ""
+        });
+      } else if ( key.indexOf( "Gewichtung" ) >= 0 ) {
+        month.weights.push({
+          id: key.substr( key.indexOf("_t"+group) -1, 1),
+          val: val
+        })
+      } else if ( key.indexOf( "Aspekt" ) >= 0 ) {
+        month.words.push({
+          id: key.substr( key.indexOf( "Aspekt_" ) + 7, 1),
+          val: val
+        })
+      } else if ( key.toLowerCase().indexOf( "seiqol" ) >= 0 ) {
+        month.result = val;
+      }
+    });
+
+    return checkMonths( monthsArray );
   };
+  var checkMonths = function ( monthsToCheck ) {
+    // Remove months with no result, insufficient data, or empty words.
+    // Careful: First month is different, as there wasn't a Stichwort yet.
+    return _.reject( monthsToCheck, function( m ) {
+      return !m.result ||
+             m.words.length !== 5 ||
+             m.values.length !== 5 ||
+             m.weights.length !== 5 ||
+             _.any( m.words, function(w){ return _.isEmpty( w.val.trim() ); });
+    });
+  };
+
+  var getMonths = function () { return months; };
+  var setMonths = function ( jsonData ) { months = json2Months( jsonData ); };
+
+  var getNrOfEntriesPerMonth = function () { return nrOfEntries; };
 
   var initialSettings = function () {
     Chart.defaults.global.animation.duration = 400;
@@ -60,61 +117,6 @@ var LQBViz = (function () {
     return ( typeof index === "undefined" ) ? arr : arr[index];
   };
 
-  var json2Months = function ( data ) {
-    var months = [];
-
-    _.each(data, function(val, key) {
-      if ( key.indexOf("_t") <0 ) return;
-      var group = parseInt( key.substr(key.lastIndexOf("_t")+2) ),
-          month = _.find( months, function( m ) { return m.id === group; });
-
-      if ( !month ) { // create new month if not found yet
-        month = {
-          id: group,
-          words: [],
-          values: [],
-          weights: [],
-          result: 0
-        };
-        months.push( month );
-      }
-
-      // put into correct array
-      if ( key.indexOf( "Zufriedenheit" ) >= 0 ) {
-        month.values.push({
-          id: key.substr( key.indexOf("_t"+group) -1, 1),
-          val: val ? val.trim() : ""
-        });
-      } else if ( key.indexOf( "Gewichtung" ) >= 0 ) {
-        month.weights.push({
-          id: key.substr( key.indexOf("_t"+group) -1, 1),
-          val: val
-        })
-      } else if ( key.indexOf( "Aspekt" ) >= 0 ) {
-        month.words.push({
-          id: key.substr( key.indexOf( "Aspekt_" ) + 7, 1),
-          val: val
-        })
-      } else if ( key.toLowerCase().indexOf( "seiqol" ) >= 0 ) {
-        month.result = val;
-      }
-    });
-
-    return checkMonths( months );
-  };
-
-  var checkMonths = function ( months ) {
-    // Remove months with no result, insufficient data, or empty words.
-    // Careful: First month is different, as there wasn't a Stichwort yet.
-    return _.reject( months, function( m ) {
-      return !m.result ||
-             m.words.length !== 5 ||
-             m.values.length !== 5 ||
-             m.weights.length !== 5 ||
-             _.any( m.words, function(w){ return _.isEmpty( w.val.trim() ); });
-    });
-  };
-
   var get2dContext = function ( id ) {
     return $("#"+id)[0].getContext("2d");
   };
@@ -129,11 +131,11 @@ var LQBViz = (function () {
     return string.length > length ? string.substr( 0, length - 3 ) + "..." : string;
   };
 
-  var createMonthButtons = function ( months ) {
+  var createMonthButtons = function () {
     if ( months.length <= 1 ) {
       $(".monthButtons").hide(); // If there's only one (or zero) months, it's useless to draw the buttons
     } else {
-      var currentMonthID = _.last( months ).id;
+      var currentMonthID = this.getLastMonth().id;
 
       _.each( months, function ( m ) {
         $( '<li class="' + (m.id === currentMonthID ? "activeMonth" : "") + '">\
@@ -143,29 +145,21 @@ var LQBViz = (function () {
     }
   };
 
-  var getMonthByID = function ( months, id ) {
-    return _.find( months, function(m){return m.id === id; });
-  };
+  var getMonthByID = function ( id ) { return _.find( months, function(m){return m.id === id; }); };
+  var getLastMonth = function () { return _.last( months ); };
+  var getFirstMonth = function () { return _.first( months ); };
 
-  var getLastMonth = function ( months ) {
-    return _.last( months );
-  };
-
-  var getFirstMonth = function ( months ) {
-    return _.first( months );
-  };
-
-  var getNextMonth = function ( months, currentMonthID ) {
-    if ( currentMonthID === this.getLastMonth( months ).id ) {
-      return this.getFirstMonth( months );
+  var getNextMonth = function ( currentMonthID ) {
+    if ( currentMonthID === this.getLastMonth().id ) {
+      return this.getFirstMonth();
     } else {
       return _.find( months, function(m){ return m.id > currentMonthID; });
     }
   };
 
-  var getPrevMonth = function ( months, currentMonthID ) {
-    if ( currentMonthID === this.getFirstMonth( months ).id ) {
-      return this.getLastMonth( months );
+  var getPrevMonth = function ( currentMonthID ) {
+    if ( currentMonthID === this.getFirstMonth().id ) {
+      return this.getLastMonth();
     } else {
       return _.last( _.filter( months, function(m){ return m.id < currentMonthID; } ) );
     }
@@ -176,7 +170,6 @@ var LQBViz = (function () {
     getMonthNameShort: getMonthNameShort,
     getColors: getColors,
     getNrOfEntriesPerMonth: getNrOfEntriesPerMonth,
-    json2Months: json2Months,
     get2dContext: get2dContext,
     updatePieLegend: updatePieLegend,
     truncate: truncate,
@@ -185,7 +178,9 @@ var LQBViz = (function () {
     getLastMonth: getLastMonth,
     getMonthByID: getMonthByID,
     getNextMonth: getNextMonth,
-    getPrevMonth: getPrevMonth
+    getPrevMonth: getPrevMonth,
+    getMonths: getMonths,
+    setMonths: setMonths
   };
 })();
 
@@ -194,7 +189,6 @@ $(document).ready(function () {
       lineChart,
       pieChart,
       barChart,
-      months = [],
       totalBarData = [],
       totalPieData = [],
       lineChartData = {
@@ -229,23 +223,14 @@ $(document).ready(function () {
       };
 
   $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
-    var nextMonth = $(e.target).data("month"),
-        lastMonthID = _.last( months ).id,
-        firstMonthID = _.first( months ).id;
+    var clickedBtnAttribute = $(e.target).data("month") || $(e.target).parent().data("month") || $(e.originalEvent.currentTarget).data("month");
 
-    if ( nextMonth === undefined ) { // in case the icon on prev/next recognizes the click
-      nextMonth = $(e.target).parent().data("month");
-    }
-    if ( nextMonth === undefined ) { // in case caret recognizes the click
-      nextMonth = $(e.originalEvent.currentTarget).data("month");
-    }
-
-    if ( nextMonth === "next" ) {
-      currentMonth = LQBViz.getNextMonth( months, currentMonth ).id;
-    } else if ( nextMonth === "prev" ) {
-      currentMonth = LQBViz.getPrevMonth( months, currentMonth ).id;
+    if ( clickedBtnAttribute === "next" ) {
+      currentMonth = LQBViz.getNextMonth( currentMonth ).id;
+    } else if ( clickedBtnAttribute === "prev" ) {
+      currentMonth = LQBViz.getPrevMonth( currentMonth ).id;
     } else {
-      currentMonth = +nextMonth;
+      currentMonth = +clickedBtnAttribute;
     }
 
     $(".activeMonth").removeClass("activeMonth");
@@ -258,7 +243,7 @@ $(document).ready(function () {
   });
 
   var updateGraphs = function() {
-    var relevantData = LQBViz.getMonthByID( months, currentMonth );
+    var relevantData = LQBViz.getMonthByID( currentMonth );
 
     for( var i = 0; i < LQBViz.getNrOfEntriesPerMonth(); i++ ) {
       pieChart.data.datasets[0].data[i] = relevantData.weights[i].val;
@@ -320,10 +305,10 @@ $(document).ready(function () {
       dataType : 'json',
       success: function ( data ) {
 
-        months = LQBViz.json2Months( data );
+        LQBViz.setMonths( data );
 
         //from each month, get the data and put it in the chart-data containers
-        _.each( months, function(m) {
+        _.each( LQBViz.getMonths(), function(m) {
           // LINECHART
           if ( m.result && parseInt( m.result ) ) {
             lineChartData.labels.push( LQBViz.getMonthName( m.id ) );
@@ -364,8 +349,8 @@ $(document).ready(function () {
         });
 
         // take last available month as the currently selected month
-        currentMonth = _.last( months ).id;
-        LQBViz.createMonthButtons( months );
+        currentMonth = LQBViz.getLastMonth().id;
+        LQBViz.createMonthButtons();
 
         barChartData.labels = _.last( totalBarData ).labels;
         barChartData.datasets[0].data = _.last( totalBarData ).values;
