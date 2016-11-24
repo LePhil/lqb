@@ -83,8 +83,8 @@ if ( !isLoggedIn() ) {
 		</div>
 		<div class="col_7 canvas-holder">
 			<ul class="button-bar monthButtons">
-				<li><a class="changeMonthBtn" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
-			  <li><a class="changeMonthBtn" data-month="next" href=""><i class="fa fa-caret-right"></i></a></li>
+				<li><a class="changeMonthBtn prev" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
+			  <li><a class="changeMonthBtn next" data-month="next" href=""><i class="fa fa-caret-right"></i></a></li>
 			</ul>
       <canvas id="chart-area2" width="300" height="300"></canvas>
 		</div>

@@ -65,14 +65,12 @@ var LQBViz = (function () {
 
     _.each(data, function(val, key) {
       if ( key.indexOf("_t") <0 ) return;
-      var group = key.substr(key.lastIndexOf("_t")+2),
-          month = _.find( months, function( m ) {
-            return m.id === parseInt( group );
-          });
+      var group = parseInt( key.substr(key.lastIndexOf("_t")+2) ),
+          month = _.find( months, function( m ) { return m.id === group; });
 
       if ( !month ) { // create new month if not found yet
         month = {
-          id: parseInt( group ),
+          id: group,
           words: [],
           values: [],
           weights: [],
@@ -119,7 +117,59 @@ var LQBViz = (function () {
 
   var get2dContext = function ( id ) {
     return $("#"+id)[0].getContext("2d");
-  }
+  };
+
+  var updatePieLegend = function( index, text ){
+    var node = $("#pieLegend li")[index];
+    $(node).children(".color").css("background-color", this.getColors( "pie", false, index ) );
+    $(node).children(".text").html( text );
+  };
+
+  var truncate = function ( string, length ) {
+    return string.length > length ? string.substr( 0, length - 3 ) + "..." : string;
+  };
+
+  var createMonthButtons = function ( months ) {
+    if ( months.length <= 1 ) {
+      $(".monthButtons").hide(); // If there's only one (or zero) months, it's useless to draw the buttons
+    } else {
+      var currentMonthID = _.last( months ).id;
+
+      _.each( months, function ( m ) {
+        $( '<li class="' + (m.id === currentMonthID ? "activeMonth" : "") + '">\
+              <a class="changeMonthBtn month'+ m.id +'" data-month="'+ m.id +'" href="">'+ this.getMonthName( m.id ) +'</a>\
+            </li>' ).insertBefore( ".monthButtons li:last-child" );
+      }, this );
+    }
+  };
+
+  var getMonthByID = function ( months, id ) {
+    return _.find( months, function(m){return m.id === id; });
+  };
+
+  var getLastMonth = function ( months ) {
+    return _.last( months );
+  };
+
+  var getFirstMonth = function ( months ) {
+    return _.first( months );
+  };
+
+  var getNextMonth = function ( months, currentMonthID ) {
+    if ( currentMonthID === this.getLastMonth( months ).id ) {
+      return this.getFirstMonth( months );
+    } else {
+      return _.find( months, function(m){ return m.id > currentMonthID; });
+    }
+  };
+
+  var getPrevMonth = function ( months, currentMonthID ) {
+    if ( currentMonthID === this.getFirstMonth( months ).id ) {
+      return this.getLastMonth( months );
+    } else {
+      return _.last( _.filter( months, function(m){ return m.id < currentMonthID; } ) );
+    }
+  };
 
   return {
     getMonthName: getMonthName,
@@ -127,12 +177,23 @@ var LQBViz = (function () {
     getColors: getColors,
     getNrOfEntriesPerMonth: getNrOfEntriesPerMonth,
     json2Months: json2Months,
-    get2dContext: get2dContext
+    get2dContext: get2dContext,
+    updatePieLegend: updatePieLegend,
+    truncate: truncate,
+    createMonthButtons: createMonthButtons,
+    getFirstMonth: getFirstMonth,
+    getLastMonth: getLastMonth,
+    getMonthByID: getMonthByID,
+    getNextMonth: getNextMonth,
+    getPrevMonth: getPrevMonth
   };
 })();
 
 $(document).ready(function () {
   var currentMonth,
+      lineChart,
+      pieChart,
+      barChart,
       months = [],
       totalBarData = [],
       totalPieData = [],
@@ -148,16 +209,14 @@ $(document).ready(function () {
           data : []
         }]
       },
-      pieData = function() {
-        return {
-          labels: new Array(LQBViz.getNrOfEntriesPerMonth()),
-          datasets: [{
-            data: new Array(LQBViz.getNrOfEntriesPerMonth()),
-            backgroundColor: LQBViz.getColors( "pie", false ),
-            hoverBackgroundColor: LQBViz.getColors( "pie", true )
-          }]
-        };
-      }(),
+      pieData = {
+        labels: new Array(LQBViz.getNrOfEntriesPerMonth()),
+        datasets: [{
+          data: new Array(LQBViz.getNrOfEntriesPerMonth()),
+          backgroundColor: LQBViz.getColors( "pie", false ),
+          hoverBackgroundColor: LQBViz.getColors( "pie", true )
+        }]
+      },
       barChartData = {
         labels : [],
         datasets : [{
@@ -168,25 +227,6 @@ $(document).ready(function () {
           data : []
         }]
       };
-
-  var createMonthButtons = function() {
-    // If there's only one (or zero) months, it's useless to draw the buttons
-    if ( months.length <= 1 ) {
-      $(".monthButtons").hide();
-    } else {
-      _.each( months, function( m ){
-        $( '<li class="' + (m.id === currentMonth ? "activeMonth" : "") + '">\
-              <a class="changeMonthBtn month'+ m.id +'" data-month="'+ m.id +'" href="">'+ LQBViz.getMonthName( m.id ) +'</a>\
-            </li>' ).insertBefore( ".monthButtons li:last-child" );
-      });
-    }
-  };
-
-  var updatePieLegend = function( index, text ){
-    var node = $("#pieLegend li")[index];
-    $(node).children(".color").css("background-color", LQBViz.getColors( "pie", false, index ) );
-    $(node).children(".text").html( text );
-  };
 
   $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
     var nextMonth = $(e.target).data("month"),
@@ -201,17 +241,9 @@ $(document).ready(function () {
     }
 
     if ( nextMonth === "next" ) {
-      if ( currentMonth >= lastMonthID ) {
-        currentMonth = firstMonthID;
-      } else {
-        currentMonth = _.find( months, function(m){ return m.id > currentMonth; }).id;
-      }
+      currentMonth = LQBViz.getNextMonth( months, currentMonth ).id;
     } else if ( nextMonth === "prev" ) {
-      if ( currentMonth <= firstMonthID ) {
-        currentMonth = lastMonthID;
-      } else {
-        currentMonth = _.last( _.filter( months, function(m){ return m.id < currentMonth; } ) ).id;
-      }
+      currentMonth = LQBViz.getPrevMonth( months, currentMonth ).id;
     } else {
       currentMonth = +nextMonth;
     }
@@ -226,20 +258,17 @@ $(document).ready(function () {
   });
 
   var updateGraphs = function() {
-    var relevantData = _.find( months, function(m){return m.id === currentMonth; });
+    var relevantData = LQBViz.getMonthByID( months, currentMonth );
 
-    for( var i = 0; i < pieChart.data.datasets[0].data.length; i++ ) {
+    for( var i = 0; i < LQBViz.getNrOfEntriesPerMonth(); i++ ) {
       pieChart.data.datasets[0].data[i] = relevantData.weights[i].val;
       var val = relevantData.words[i].val;
-      pieChart.data.labels[i] = ( val.length > 28 ? val.substr( 0, 25 ) + "..." : val );
-      updatePieLegend( i, val );
-    }
+      pieChart.data.labels[i] = LQBViz.truncate(val, 28);
+      LQBViz.updatePieLegend( i, val );
 
-    for( var i = 0; i < barChart.data.datasets[0].data.length; i++ ) {
       barChart.data.datasets[0].data[i] = +relevantData.values[i].val;
-      var val = relevantData.words[i].val;  // make label for bar chart max. 15 chars
+      barChart.data.labels[i] = LQBViz.truncate(val, 15);
       // TODO: allow full text in tooltip
-      barChart.data.labels[i] = ( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
     }
 
     barChart.update();
@@ -293,7 +322,7 @@ $(document).ready(function () {
 
         months = LQBViz.json2Months( data );
 
-
+        //from each month, get the data and put it in the chart-data containers
         _.each( months, function(m) {
           // LINECHART
           if ( m.result && parseInt( m.result ) ) {
@@ -316,6 +345,7 @@ $(document).ready(function () {
             values: [],
             weights: []
           });
+
           _.each( m.words, function(w) {
             _.last( totalBarData ).labels.push( w.val );
           });
@@ -333,9 +363,9 @@ $(document).ready(function () {
 
         });
 
-        // take last available month as the currently selelcted month
+        // take last available month as the currently selected month
         currentMonth = _.last( months ).id;
-        createMonthButtons();
+        LQBViz.createMonthButtons( months );
 
         barChartData.labels = _.last( totalBarData ).labels;
         barChartData.datasets[0].data = _.last( totalBarData ).values;
