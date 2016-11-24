@@ -7,9 +7,7 @@ var LQBViz = (function () {
       barColors =      [ "rgba(255, 0, 0, 0.6)", "rgba(204,255,0,0.6)", "rgba(0, 255, 102, 0.6)", "rgba(0, 102, 255, 0.6)", "rgba(204, 0, 255, 0.6)" ],
       barColorsLight = [ "rgba(255, 0, 0, 0.4)", "rgba(204,255,0,0.4)", "rgba(0, 255, 102, 0.4)", "rgba(0, 102, 255, 0.4)", "rgba(204, 0, 255, 0.4)" ],
       months = [],
-      lineChartData,
-      pieChartData,
-      barChartData;
+      chartData;
 
 
   var json2Months = function ( data ) {
@@ -169,35 +167,37 @@ var LQBViz = (function () {
         totalPieData = [];
 
     // initial setup
-    lineChartData = {
-      labels : [],
-      datasets : [{
-        backgroundColor : "rgba(151,187,220,0.4)",
-        strokeColor : "rgb(151,187,220)",
-        pointColor : "rgb(151,187,220)",
-        pointStrokeColor : "#fff",
-        pointHighlightFill : "#fff",
-        pointHighlightStroke : "rgb(151,187,220)",
-        data : []
-      }]
-    };
-    pieChartData = {
-      labels: new Array( nrOfEntries ),
-      datasets: [{
-        data: new Array( nrOfEntries ),
-        backgroundColor: getColors( "pie", false ),
-        hoverBackgroundColor: getColors( "pie", true )
-      }]
-    };
-    barChartData = {
-      labels : [],
-      datasets : [{
-        backgroundColor : getColors( "bar", false ),
-        strokeColor : "rgba(151,187,220,0.8)",
-        highlightFill : getColors( "bar", true ),
-        highlightStroke : "rgba(151,187,220,1)",
-        data : []
-      }]
+    chartData = {
+      "line": {
+        labels : [],
+        datasets : [{
+          backgroundColor : "rgba(151,187,220,0.4)",
+          strokeColor : "rgb(151,187,220)",
+          pointColor : "rgb(151,187,220)",
+          pointStrokeColor : "#fff",
+          pointHighlightFill : "#fff",
+          pointHighlightStroke : "rgb(151,187,220)",
+          data : []
+        }]
+      },
+      "pie": {
+        labels: new Array( nrOfEntries ),
+        datasets: [{
+          data: new Array( nrOfEntries ),
+          backgroundColor: getColors( "pie", false ),
+          hoverBackgroundColor: getColors( "pie", true )
+        }]
+      },
+      "bar": {
+        labels : [],
+        datasets : [{
+          backgroundColor : getColors( "bar", false ),
+          strokeColor : "rgba(151,187,220,0.8)",
+          highlightFill : getColors( "bar", true ),
+          highlightStroke : "rgba(151,187,220,1)",
+          data : []
+        }]
+      }
     };
 
     //from each month, get the data and put it in the chart-data containers
@@ -206,8 +206,8 @@ var LQBViz = (function () {
 
       // LINECHART
       if ( m.result && parseInt( m.result ) ) {
-        lineChartData.labels.push( monthName );
-        lineChartData.datasets[0].data.push(  parseInt( m.result ) );
+        chartData.line.labels.push( monthName );
+        chartData.line.datasets[0].data.push(  parseInt( m.result ) );
       }
 
       // PIE
@@ -242,25 +242,17 @@ var LQBViz = (function () {
       });
     });
 
-    barChartData.labels = _.last( totalBarData ).labels;
-    barChartData.datasets[0].data = _.last( totalBarData ).values;
+    chartData.bar.labels = _.last( totalBarData ).labels;
+    chartData.bar.datasets[0].data = _.last( totalBarData ).values;
 
     // Fill initial month for bar chart
     for(var i = 0; i < LQBViz.getNrOfEntriesPerMonth(); i++) {
-      pieChartData.labels[i] = _.last( totalPieData ).data[i].label;
-      pieChartData.datasets[0].data[i] = +_.last( totalPieData ).data[i].value;
+      chartData.pie.labels[i] = _.last( totalPieData ).data[i].label;
+      chartData.pie.datasets[0].data[i] = +_.last( totalPieData ).data[i].value;
     }
   };
 
-  var getChartData = function ( type ) {
-    if ( type === "line" ) {
-      return lineChartData;
-    } else if ( type === "pie" ) {
-      return pieChartData;
-    } else if ( type === "bar" ) {
-      return barChartData;
-    }
-  };
+  var getChartData = function ( type ) { return chartData[type]; };
 
   return {
     getMonthName: getMonthName,
