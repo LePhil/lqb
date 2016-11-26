@@ -25,13 +25,15 @@ if ( !isLoggedIn() ) {
 	<script type="text/javascript" src="js/kickstart.js"></script>
 	<script type="text/javascript" src="js/chartjs/Chart.js"></script>
 	<script type="text/javascript" src="js/underscore-min.js"></script>
+	<script type="text/javascript" src="js/LQBViz.js"></script>
 	<script type="text/javascript" src="js/details.js"></script>
+	<script type="text/javascript" src="js/tracker.js"></script>
 </head>
 <body>
 <div class="grid">
 	<div class="col_12" style="margin-top:100px;">
 		<div class="tab-content">
-			
+
 			<h1 class="col_12">
 				Daten&shy;einsicht Projekt "Lebensqualitäts-Barometer UZH"
 			</h1>
@@ -48,13 +50,13 @@ if ( !isLoggedIn() ) {
 
 		<div class="col_12">
 			<p class="explanationText">
-				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen 6 Monate aufgeführt.
+				Herzlich Willkommen zur Übersicht Ihrer persönlichen Lebensqualitäts-Datenübersicht. In den folgenden Grafiken sind Ihre Lebens&shy;qualitäts&shy;angaben der vergangenen Monate aufgeführt.
 			</p>
 		</div>
 
 		<div class="col_12 right">
-			<a class="button" target="_blank" href="print.php">Druck-Ansicht</a>
-			<a class="button" href="php/logout.php">Abmelden</a>
+			<a class="button" id="printBtn" target="_blank" href="print.php">Druck-Ansicht</a>
+			<a class="button" id="logoutBtn" href="php/logout.php">Abmelden</a>
 		</div>
 
 		<h3 class="sectionTitle col_12">Ihre Lebensqualität im Gesamtwert</h3>
@@ -82,8 +84,8 @@ if ( !isLoggedIn() ) {
 		</div>
 		<div class="col_7 canvas-holder">
 			<ul class="button-bar monthButtons">
-				<li><a class="changeMonthBtn" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
-			  <li><a class="changeMonthBtn" data-month="next" href=""><i class="fa fa-caret-right"></i></a></li>
+				<li><a class="changeMonthBtn prev" data-month="prev" href=""><i class="fa fa-caret-left"></i></a></li>
+			  <li><a class="changeMonthBtn next" data-month="next" href=""><i class="fa fa-caret-right"></i></a></li>
 			</ul>
       <canvas id="chart-area2" width="300" height="300"></canvas>
 		</div>

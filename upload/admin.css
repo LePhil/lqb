@@ -1,0 +1,25 @@
+span.date {
+    font-style: italic;
+    display: inline-block;
+    min-width: 150px;
+}
+
+span.event {
+    font-weight: bold;
+    min-width: 170px;
+    display: inline-block;
+}
+
+span.origin,
+span.ip {
+    display: inline-block;
+    min-width: 110px;
+}
+
+span.code {
+    font-weight: bold;
+}
+
+li#header {
+    background-color: #ddd;
+}

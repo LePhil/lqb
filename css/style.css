@@ -12,83 +12,82 @@
 /*---------------------------------
 	OVERRIDES
 -----------------------------------*/
-h1,h2,h3,h4,h5,h6{
-font-family: "Arimo", arial, verdana, sans-serif;
-font-weight:normal;
+h1,h2,h3,h4,h5,h6 {
+	font-family: "Arimo", arial, verdana, sans-serif;
+	font-weight:normal;
 }
 
 thead th,
-tbody th{
-font-family: "Arimo", arial, verdana, sans-serif;
+tbody th {
+	font-family: "Arimo", arial, verdana, sans-serif;
 }
 
 button,
 a.btn,
 input[type="submit"],
 input[type="reset"],
-input[type="button"]{
-font-family: "Arimo", arial, verdana, sans-serif;
+input[type="button"] {
+	font-family: "Arimo", arial, verdana, sans-serif;
 }
 
-.menu{
-font-family: "Arimo", arial, verdana, sans-serif;
+.menu {
+	font-family: "Arimo", arial, verdana, sans-serif;
 }
 
-blockquote{
-font-family: "Arimo", arial, verdana, sans-serif;
+blockquote {
+	font-family: "Arimo", arial, verdana, sans-serif;
 }
 
 /*---------------------------------
 	LAYOUT
 -----------------------------------*/
-body{
-margin:0;
-padding:0 0 0 0;
-color:#000;
-background:#efefef url(img/gray_jean.png);
-font:normal 0.9em/150% 'Arimo', arial, verdana, sans-serif;
-text-shadow: 0 0 1px transparent; /* google font pixelation fix */
+body {
+	margin:0;
+	padding:0 0 0 0;
+	color:#000;
+	background:#efefef url(img/gray_jean.png);
+	font:normal 0.9em/150% 'Arimo', arial, verdana, sans-serif;
+	text-shadow: 0 0 1px transparent; /* google font pixelation fix */
 }
 
-#wrap{
-width:100%;
-background:#fff;
-margin:30px auto 30px auto;
-padding:0 2%;
-border:1px solid #ccc;
+#wrap {
+	width:100%;
+	background:#fff;
+	margin:30px auto 30px auto;
+	padding:0 2%;
+	border:1px solid #ccc;
 }
 
-
-#footer{
-text-align:center;
-padding:20px;
-margin:0;
-border-top:1px solid #ddd;
-color:#999;
-font-size:0.8em;
-text-shadow:0px 1px 1px #fff;
-position: relative;
-top:0;
-left:0;
-background:#fff;
+#footer {
+	text-align:center;
+	padding:20px;
+	margin:0;
+	border-top:1px solid #ddd;
+	color:#999;
+	font-size:0.8em;
+	text-shadow:0px 1px 1px #fff;
+	position: relative;
+	top:0;
+	left:0;
+	background:#fff;
 }
 
-	#link-top{
+#link-top {
 	display:none;
-	}
+}
 
 /* NAV BAR*/
-.navbar{
-position:fixed;
-top:0;
-left:0;
-width: 100%;
-background:#000;
-color:#fff;
-z-index:1000;
+.navbar {
+	position:fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	background:#000;
+	color:#fff;
+	z-index:1000;
 }
 
-	.navbar #logo{
+.navbar #logo {
 	position:absolute;
 	top:0;
 	right:0;
@@ -96,62 +95,63 @@ z-index:1000;
 	font-size: 1.7em;
 	color:#efefef;
 	text-decoration:none;
-	}
+}
 
-	.navbar span{
+.navbar span {
 	color:#86dc00;
-	}
+}
 
 
-	.navbar ul{
+.navbar ul {
 	display:inline-block;
 	margin:0;
 	padding:0;
-	}
-
-		.navbar li{
-		margin:0;
-		padding:0;
-		list-style-type:0;
-		display:inline-block;
-		}
-
-		.navbar li a{
-		display:inline-block;
-		color:#efefef;
-		padding:1em 1.3em;
-		text-decoration:none;
-		text-transform: uppercase;
-		line-height:100%;
-		font-size: 1.2em;
-		}
-
-.callout{
-background:#4598ef;/*#86dc00;*/
-padding:3em 0;
-color:#fff;
-box-shadow:inset 0 0 10px rgba(0,0,0,0.2);
-text-align: center;
-text-shadow:0px 1px 3px rgba(0,0,0,0.2);
-display:block;
-}
-	.callout + div.grid{margin-top:50px;}
-	 a.callout{cursor:pointer;}
-	 .callout i.icon-4x{font-size:6em;}
-	 .callout h4{margin-bottom:30px;}
-	 .callout-top{margin:50px 0 0 0;}
-	 .callout p{margin-bottom:0;}
-	 .callout .button{margin-top:10px;}
-	 .callout.green{background:#19ad0b;/*#86dc00;*/}
-
-#mc_embed_signup{
-padding:30px 0;
 }
 
-#ui-preview{
-border:5px solid #ddd;
-margin:30px 0;
-display:block;
+.navbar li {
+	margin:0;
+	padding:0;
+	list-style-type:0;
+	display:inline-block;
+}
+
+.navbar li a {
+	display:inline-block;
+	color:#efefef;
+	padding:1em 1.3em;
+	text-decoration:none;
+	text-transform: uppercase;
+	line-height:100%;
+	font-size: 1.2em;
+}
+
+.callout {
+	background:#4598ef;/*#86dc00;*/
+	padding:3em 0;
+	color:#fff;
+	box-shadow:inset 0 0 10px rgba(0,0,0,0.2);
+	text-align: center;
+	text-shadow:0px 1px 3px rgba(0,0,0,0.2);
+	display:block;
+}
+
+.callout + div.grid{margin-top:50px;}
+a.callout{cursor:pointer;}
+.callout i.icon-4x{font-size:6em;}
+.callout h4{margin-bottom:30px;}
+.callout-top{margin:50px 0 0 0;}
+.callout p{margin-bottom:0;}
+.callout .button{margin-top:10px;}
+.callout.green{background:#19ad0b;/*#86dc00;*/}
+
+#mc_embed_signup {
+	padding:30px 0;
+}
+
+#ui-preview {
+	border:5px solid #ddd;
+	margin:30px 0;
+	display:block;
 }
 
 /* MAIN */
@@ -170,8 +170,24 @@ ul.button-bar {
 	margin-bottom: 20px;
 	width: 100%;
 }
-.changeMonthBtn.activeMonth,
-.changeMonthBtn.activeMonth:hover {
+
+/* To be able to show all available months, the inacvice months are not displayed in the list. */
+ul.button-bar li.activeMonth,
+ul.button-bar li.activeMonth a {
+	width: 175px;
+}
+ul.button-bar li {
+	display: none;
+}
+ul.button-bar li.activeMonth,
+ul.button-bar li.first,
+ul.button-bar li.last {
+	display: inline-block;
+}
+
+ul.button-bar .activeMonth a,
+ul.button-bar .activeMonth:hover a,
+ul.button-bar .activeMonth a:hover {
 	text-shadow: 0 -1px 0 #1D6DC1;
 	color: #fff;
 	background: rgb(122,188,255);
@@ -212,4 +228,9 @@ p.explanationText {
 
 h1 {
 	font-size: 2.5em;
+}
+
+#chart-area2 {
+	max-width: 500px;
+	margin: 0 auto;
 }

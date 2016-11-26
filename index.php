@@ -24,12 +24,16 @@ if ( isLoggedIn() ) {
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/kickstart.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/tracker.js"></script>
 </head>
 <body>
 <div class="grid">
 
+	<div class="col_12 right">
+		<a href="upload/">Admin</a>
+	</div>
 
-	<div class="col_12" style="margin-top:100px;">
+	<div class="col_12" style="margin-top:60px;">
 		<div class="tab-content">
 
 			<h1 class="col_12">
