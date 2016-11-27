@@ -16,6 +16,7 @@ if ( !isAdmin() ) {
 	<meta name="description" content="" />
 
 	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="../css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="../css/kickstart.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="../css/style.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="admin.css" media="all" />
@@ -42,16 +43,23 @@ if ( !isAdmin() ) {
 
 	<!-- Uplaoad -->
 	<div class="col_12">
-		<h4>Upload</h4>
-		<p>Weiteren Monat hochladen:<p>
+		<h4 class="col_12">Upload</h4>
+		<!-- TODO: Anleitung -->
+		<p>Weitere Monate hochladen: (<a class="right" href="#">Anleitung</a>)</p>
 
 		<form class="vertical col_12">
-			<div class="col_6">
-				<label for="monthNo">Monat <span class="right">1-999</span></label>
-				<input id="monthNo" type="number" min="1" />
 
-				<label for="file">Datei <span class="right">.csv</span></label>
+			<div class="col_6">
+				<label for="file">Datei <span class="right">CSV-Datei (.csv)</span></label>
 				<input id="file" type="file" class="file">
+			</div>
+
+			<div class="col_6">
+				<label for="months">Monate, kommasepariert (oder "alle") <span class="right">z.B. 1, 2, 3</span></label>
+				<input id="months" type="text" />
+			</div>
+
+			<div class="col_12 right">
 				<button type="submit">Submit</button>
 			</div>
 
