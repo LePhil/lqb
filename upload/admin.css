@@ -23,3 +23,11 @@ span.code {
 li#header {
     background-color: #ddd;
 }
+
+
+#months button {
+  margin-left: 10px;
+}
+button.topOffset {
+  margin-top: 23px;
+}
