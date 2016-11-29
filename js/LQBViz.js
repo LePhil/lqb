@@ -1,3 +1,11 @@
+/**
+ * 1) figure out data structure needed for the graphs
+ * 2) make array for each graph
+ * 3) instead of re-filling the one dataset, use selectedMonth to access a month's dataset and redraw the charts
+ * 4) for print, just loop over the months and draw the graphs (except line) for each month --> use month as a parameter!!!
+ * 5) testing
+ */
+
 var LQBViz = (function () {
   var nrOfEntries = 5,
       selectedMonth,
@@ -11,8 +19,8 @@ var LQBViz = (function () {
       chartData,
       lineChart,
       pieChart,
-      barChart;
-
+      barChart,
+      printVersion = false;
 
   var json2Months = function ( data ) {
     var monthsArray = [];
@@ -76,8 +84,10 @@ var LQBViz = (function () {
 
   var getNrOfEntriesPerMonth = function () { return nrOfEntries; };
 
-  var initialSettings = function () {
-    Chart.defaults.global.animation.duration = 400;
+  var init = function ( options ) {
+    printVersion = options.printVersion;
+
+    Chart.defaults.global.animation.duration = options.animationDuration;
     Chart.defaults.global.animation.easing = "easeInOutQuart";
     Chart.defaults.global.scaleOverride = true;
     Chart.defaults.global.scaleSteps = 5;
@@ -87,7 +97,7 @@ var LQBViz = (function () {
     Chart.defaults.global.hover.mode = "nearest";
     Chart.defaults.global.tooltips.titleFontSize = 18;
     Chart.defaults.global.tooltips.bodyFontSize = 18;
-  }();
+  };
 
   /**
    * returns a human readable month name, depending on the supplied index.
@@ -126,8 +136,12 @@ var LQBViz = (function () {
 
   var get2dContext = function ( id ) { return $("#"+id)[0].getContext("2d"); };
 
-  var updatePieLegend = function( index, text ){
-    var node = $("#pieLegend li")[index];
+  var updatePieLegend = function( index, text, monthId ){
+    if ( printVersion ) {
+      var node = $("#pieLegend_" + monthId + " li")[index];
+    } else {
+      var node = $("#pieLegend li")[index];
+    }
     $(node).children(".color").css("background-color", getColors( "pie", false, index ) );
     $(node).children(".text").html( text );
   };
@@ -272,8 +286,8 @@ var LQBViz = (function () {
     for( var i = 0; i < nrOfEntries; i++ ) {
       pieChart.data.datasets[0].data[i] = selectedMonth.weights[i].val;
       var val = selectedMonth.words[i].val;
+      updatePieLegend( i, val + " ("+selectedMonth.weights[i].val+"%)" );
       pieChart.data.labels[i] = truncate(val, 28);
-      updatePieLegend( i, val );
 
       barChart.data.datasets[0].data[i] = +selectedMonth.values[i].val;
       barChart.data.labels[i] = truncate(val, 15);
@@ -285,18 +299,7 @@ var LQBViz = (function () {
   };
 
   var drawCharts = function() {
-    lineChart = new Chart( get2dContext("chart-area1"), {
-      type: "line",
-      data: chartData.line,
-      options: {
-        responsive: true,
-        legend: { display: false },
-        scales: {
-          yAxes: [{ ticks: { beginAtZero: true } }],
-          xAxes: [{ ticks: { autoSkip: false /* show all labels, always */ } }]
-        }
-      }
-    });
+    drawLineChart();
     pieChart = new Chart( get2dContext("chart-area2"), {
       type: "pie",
       data: chartData.pie,
@@ -319,16 +322,100 @@ var LQBViz = (function () {
     });
   };
 
+  var createPrintGraphs = function () {
+    _.each( months, function( m ){
+      var pieTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
+          pieChartHTML = '<div class="canvas-holder"><canvas height="150" width="150" class="piechart" id="piechart_' + m.id + '"></canvas></div>',
+          pieLegendHTML = '<ul class="pieLegend" id="pieLegend_' + m.id + '"><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li></ul>',
+          barTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
+          barChartHTML = '<div class="canvas-holder"><canvas height="200" width="400" class="barchart" id="barchart_' + m.id + '"></canvas></div>',
+          barLegendHTML = '<table id="barChartTable_'+m.id+'" class="chartTable"><tr><th>Bereich</th><th>Wert</th></tr></table>';
+
+      $('<table><tr><td colspan=2>' + pieTitleHTML + '</td></tr><tr><td>' + pieChartHTML +'</td><td>' + pieLegendHTML + '</td></tr></table>').insertBefore("#insertPieChart")
+      $('<table><tr><td colspan=2>' + barTitleHTML + '</td></tr><tr><td>' + barChartHTML +'</td><td>' + barLegendHTML + '</td></tr></table>').insertBefore("#insertBarChart")
+    });
+  };
+
+  var drawLineChart = function() {
+    lineChart = new Chart( get2dContext("chart-area1"), {
+      type: "line",
+      data: chartData.line,
+      options: {
+        responsive: true,
+        legend: { display: false },
+        scales: {
+          yAxes: [{ ticks: { beginAtZero: true } }],
+          xAxes: [{ ticks: { autoSkip: false /* show all labels, always */ } }]
+        }
+      }
+    });
+  }
+
+  var fillLineChartTable = function(lineChartData) {
+    for( var i = 0; i < lineChartData.labels.length; i++ ) {
+      var m = lineChartData.labels[i],
+          v = lineChartData.datasets[0].data[i]
+      $("#lineChartTable tbody").append('<tr><td>'+m+'</td><td>'+v+'</td></tr>')
+    }
+  };
+
+  var drawPrintCharts = function() {
+    drawLineChart();
+    fillLineChartTable(chartData.line);
+
+    var i = 0;
+    _.each( months, function( m ) {
+      var tempPieCTX = $("#piechart_"+ (m.id) )[0].getContext("2d"),
+          tempPie = new Chart(tempPieCTX).Pie( pieData[i].data, {
+            animationEasing: "easeInOutQuart",
+            animationSteps: 30
+          });
+      _.each( pieData[i].data, function(dataPoint, relIndex){
+        updatePieLegend( m.id, relIndex, dataPoint.label, dataPoint.value );
+      });
+      pieCharts.push(tempPie);
+
+      var tempBarCTX = $("#barchart_"+ (m.id) )[0].getContext("2d"),
+          tempBarData = _.extend( barDataTemplate, { labels: bardata[i].labels } );
+
+      tempBarData.datasets[0].data = bardata[i].values;
+
+      _.each( tempBarData.labels, function(val, index){
+        $("#barChartTable_"+m.id+" tbody").append('<tr><td>'+ val +'</td><td>'+bardata[i].values[index]+'</td></tr>')
+        tempBarData.labels[index] = val.length > 15 ? val.substr( 0, 12 ) + "..." : val;
+      } );
+
+      var tempBar = new Chart(tempBarCTX).Bar(tempBarData, {
+            animationEasing: "easeInOutQuart",
+            animationSteps: 30
+          });
+      barCharts.push(tempBar);
+      i++;
+    });
+  };
+
   var processData = function ( rawData ) {
     setMonths( rawData );
     createGraphData();
-    createMonthButtons();
-    drawCharts();
+
+    if ( printVersion ) {
+      createPrintGraphs();
+      drawPrintCharts();
+    } else {
+      createMonthButtons();
+      drawCharts();
+    }
+
     updateGraphs();
+
+    if ( printVersion ) {
+      window.print();
+    }
   };
 
   return {
     handleMonthChange: handleMonthChange,
-    processData: processData
+    processData: processData,
+    init: init
   };
 })();

@@ -231,6 +231,7 @@ h1 {
 }
 
 #chart-area2 {
-	max-width: 500px;
+	max-width: 400px;
+	max-height: 400px;
 	margin: 0 auto;
 }

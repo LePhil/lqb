@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
   $("ul.monthButtons").on("click", ".changeMonthBtn", function( e ) {
     LQBViz.handleMonthChange( e );
     e.stopPropagation();
@@ -15,6 +16,11 @@ $(document).ready(function () {
       alert("Ein Fehler ist aufgetreten. Bitte laden Sie die Seite neu oder melden Sie sich bei der Versuchsleitung.");
     });
   };
+
+  LQBViz.init({
+    printVersion: false,
+    animationDuration: 400
+  });
 
   getData();
 });
