@@ -14,19 +14,7 @@ var LQBViz = (function () {
       barChart,
       totalBarData = [],
       totalPieData = [],
-      printVersion = false,
-      pieCharts = [],
-      barCharts = [],
-      barDataTemplate = {
-        labels : [],
-        datasets : [{
-          fillColor : barColors,
-          strokeColor : "rgba(151,187,220,0.8)",
-          highlightFill : barColorsLight,
-          highlightStroke : "rgba(151,187,220,1)",
-          data : []
-        }]
-      };
+      printVersion = false;
 
   var json2Months = function ( data ) {
     var monthsArray = [];
@@ -336,17 +324,34 @@ var LQBViz = (function () {
   };
 
   var createPrintGraphs = function () {
+    var pieChartContent = [],
+        barChartContent = [];
+
     _.each( months, function( m ){
       var pieTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
-          pieChartHTML = '<div class="canvas-holder"><canvas height="150" width="150" class="piechart" id="piechart_' + m.id + '"></canvas></div>',
+          pieChartHTML = '<div class="canvas-holder"><canvas height="100" width="100" class="piechart" id="piechart_' + m.id + '"></canvas></div>',
           pieLegendHTML = '<ul class="pieLegend" id="pieLegend_' + m.id + '"><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li><li><div class="color"></div><div class="text"></div></li></ul>',
           barTitleHTML = '<h3>'+ getMonthName( m.id ) +'</h3>',
-          barChartHTML = '<div class="canvas-holder"><canvas height="200" width="400" class="barchart" id="barchart_' + m.id + '"></canvas></div>',
+          barChartHTML = '<div class="canvas-holder"><canvas height="150" width="150" class="barchart" id="barchart_' + m.id + '"></canvas></div>',
           barLegendHTML = '<table id="barChartTable_'+m.id+'" class="chartTable"><tr><th>Bereich</th><th>Wert</th></tr></table>';
 
-      $('<table><tr><td colspan=2>' + pieTitleHTML + '</td></tr><tr><td>' + pieChartHTML +'</td><td>' + pieLegendHTML + '</td></tr></table>').insertBefore("#insertPieChart")
-      $('<table><tr><td colspan=2>' + barTitleHTML + '</td></tr><tr><td>' + barChartHTML +'</td><td>' + barLegendHTML + '</td></tr></table>').insertBefore("#insertBarChart")
+      var pieContent = "<td>" + pieTitleHTML + pieChartHTML + pieLegendHTML + "</td>";
+      var barContent = "<td>" + barTitleHTML + barChartHTML + barLegendHTML + "</td>";
+
+      if ( pieChartContent.length%2 === 0 ) {   //start row
+        pieContent = "<tr>" + pieContent;
+        barContent = "<tr>" + barContent;
+      } else {  // end row
+        pieContent += "</tr>";
+        barContent += "</tr>";
+      }
+
+      pieChartContent.push(pieContent);
+      barChartContent.push(barContent);
     });
+
+    $("#pieChartContainer").append( pieChartContent.join("") );
+    $("#barChartContainer").append( barChartContent.join("") );
   };
 
   var drawLineChart = function() {
@@ -376,18 +381,21 @@ var LQBViz = (function () {
     drawLineChart();
     fillLineChartTable(chartData.line);
 
-    var i = 0;
+    var i = 0,
+        pieCharts = [],
+        barCharts = [];
+
     _.each( months, function( m ) {
-      var tempData = generatePieGraphData();
+      var tempPieData = generatePieGraphData();
 
       _.each( totalPieData[i].data, function(data, i) {
-        tempData.datasets[0].data[i] = data.value;
-        tempData.labels[i] = data.label;
+        tempPieData.datasets[0].data[i] = data.value;
+        tempPieData.labels[i] = data.label;
       });
 
       var tempPie = new Chart( get2dContext("piechart_"+ (m.id)), {
         type: "pie",
-        data: tempData,
+        data: tempPieData,
         options: {
           Easing: "easeInOutQuart",
           animationSteps: 30,
@@ -401,18 +409,17 @@ var LQBViz = (function () {
 
       var tempBarData = generateBarGraphData();
       tempBarData.datasets[0].data = totalBarData[i].values;
-      tempBarData.labels = totalBarData[i].labels;
+      tempBarData.labels = ["", "", "", "", ""];
 
-      _.each( tempBarData.labels, function(val, index){
+      _.each( totalBarData[i].labels, function(val, index){
         $("#barChartTable_"+m.id+" tbody").append('<tr><td>'+ val +'</td><td>'+totalBarData[i].values[index]+'</td></tr>')
-        tempBarData.labels.push( val.length > 15 ? val.substr( 0, 12 ) + "..." : val );
       } );
 
       var tempBar = new Chart( get2dContext("barchart_"+ (m.id)), {
             type: "bar",
             data: tempBarData,
             options: {
-              responsive: true,
+              responsive: false,
               legend: { display: false },
               scales: {
                 yAxes: [{ ticks: { beginAtZero: true, min: 0, max: 100 } }]
