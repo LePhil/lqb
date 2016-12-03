@@ -27,7 +27,7 @@
 	position: absolute;
 }
 
-table {
+table tr {
 	page-break-inside: avoid;
 }
 
@@ -80,6 +80,10 @@ ul.pieLegend li .text {
 .chartTable td {
 	text-align: left;
 	padding: 0 10px;
+	max-width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .chartTable tr {
 	border-bottom: 1px solid #DDD;
