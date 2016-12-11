@@ -31,3 +31,7 @@ li#header {
 button.topOffset {
   margin-top: 23px;
 }
+
+#tutorialText {
+  display: none;
+}

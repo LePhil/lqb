@@ -34,4 +34,8 @@ function goToService() {
   header('Location: /upload/service.php');
 }
 
+function goToServiceWithParam($param) {
+  header('Location: /upload/service.php?p='.$param);
+}
+
 ?>

@@ -16,57 +16,42 @@ var LQBViz = (function () {
       totalPieData = [],
       printVersion = false;
 
+  /**
+   * In: raw json data from DB as an array. Each elements is a month.
+   * @param  {Array} data
+   * @return {Array} months
+   */
   var json2Months = function ( data ) {
     var monthsArray = [];
 
-    _.each(data, function(val, key) {
-      if ( key.indexOf("_t") <0 ) return;
-      var group = parseInt( key.substr(key.lastIndexOf("_t")+2) ),
-          month = _.find( monthsArray, function( m ) { return m.id === group; });
+    _.each(data, function ( monthData ) {
+      month = {
+        id: +monthData.month,
+        words: [],
+        values: [],
+        weights: [],
+        result: +monthData.total
+      };
 
-      if ( !month ) { // create new month if not found yet
-        month = {
-          id: group,
-          words: [],
-          values: [],
-          weights: [],
-          result: 0
-        };
-        monthsArray.push( month );
-      }
+      _.each([1, 2, 3, 4, 5], function(i){
+        month.words.push( monthData["word"+i] );
+        month.values.push( +monthData["value"+i] );
+        month.weights.push( +monthData["weight"+i] );
+      });
 
-      // put into correct array
-      if ( key.indexOf( "Zufriedenheit" ) >= 0 ) {
-        month.values.push({
-          id: key.substr( key.indexOf("_t"+group) -1, 1),
-          val: val ? val.trim() : ""
-        });
-      } else if ( key.indexOf( "Gewichtung" ) >= 0 ) {
-        month.weights.push({
-          id: key.substr( key.indexOf("_t"+group) -1, 1),
-          val: val
-        })
-      } else if ( key.indexOf( "Aspekt" ) >= 0 ) {
-        month.words.push({
-          id: key.substr( key.indexOf( "Aspekt_" ) + 7, 1),
-          val: val
-        })
-      } else if ( key.toLowerCase().indexOf( "seiqol" ) >= 0 ) {
-        month.result = val;
-      }
+      monthsArray.push( month );
     });
 
     return checkMonths( monthsArray );
   };
   var checkMonths = function ( monthsToCheck ) {
     // Remove months with no result, insufficient data, or empty words.
-    // Careful: First month is different, as there wasn't a Stichwort yet.
     return _.reject( monthsToCheck, function( m ) {
       return !m.result ||
              m.words.length !== 5 ||
              m.values.length !== 5 ||
              m.weights.length !== 5 ||
-             _.any( m.words, function(w){ return _.isEmpty( w.val.trim() ); });
+             _.any( m.words, function(w){ return _.isEmpty( w.trim() ); });
     });
   };
 
@@ -242,17 +227,17 @@ var LQBViz = (function () {
       });
 
       _.each( m.words, function(w) {
-        _.last( totalBarData ).labels.push( w.val );
+        _.last( totalBarData ).labels.push( w );
       });
       _.each( m.values, function(v) {
-        _.last( totalBarData ).values.push( v.val );
+        _.last( totalBarData ).values.push( v );
       });
       _.each( m.weights, function(w, index) {
-        _.last( totalBarData ).weights.push( w.val );
+        _.last( totalBarData ).weights.push( w );
 
         _.last( totalPieData ).data.push({
           label: _.last( totalBarData ).labels[ index ],
-          value: w.val
+          value: w
         });
       });
     });
@@ -285,12 +270,12 @@ var LQBViz = (function () {
 
   var updateGraphs = function() {
     for( var i = 0; i < nrOfEntries; i++ ) {
-      pieChart.data.datasets[0].data[i] = selectedMonth.weights[i].val;
-      var val = selectedMonth.words[i].val;
-      updatePieLegend( i, val + " ("+selectedMonth.weights[i].val+"%)" );
+      pieChart.data.datasets[0].data[i] = selectedMonth.weights[i];
+      var val = selectedMonth.words[i];
+      updatePieLegend( i, val + " ("+selectedMonth.weights[i]+"%)" );
       pieChart.data.labels[i] = truncate(val, 28);
 
-      barChart.data.datasets[0].data[i] = +selectedMonth.values[i].val;
+      barChart.data.datasets[0].data[i] = +selectedMonth.values[i];
       barChart.data.labels[i] = truncate(val, 15);
       // TODO: allow full text in tooltip
     }

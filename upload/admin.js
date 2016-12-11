@@ -2,6 +2,40 @@ $(document).ready(function () {
   var startOffset = 0,
       paginationSize = 10;
 
+  var handleParam = function () {
+    var param = location.search ? location.search.substr(3) : "";
+
+    if (param === "success") {
+      $(".notice.success").show();
+    } else if (param !== "") {
+      var errorDesc = "";
+
+      switch (param) {
+        case "100":
+          errorDesc = "Kein File ausgewählt";
+          break;
+        case "101":
+          errorDesc = "Mit dem File stimmt etwas nicht";
+          break;
+        case "200":
+          errorDesc = "Nicht alle Spalten sind vorhanden, bitte überprüfen";
+          break;
+        case "201":
+        case "202":
+          errorDesc = "Nicht alle Daten vorhanden";
+          break;
+        case "300":
+          errorDesc = "Der Datenbank-Import ist fehlgeschlagen";
+          break;
+        default:
+          errorDesc = "Keine genaue Beschreibung vorhanden";
+      }
+
+      $("#details").html( errorDesc );
+      $(".notice.error").show();
+    }
+  };
+
   /**
    * returns the last X months as a comma-separated list of strings
    * @return {String}
@@ -81,4 +115,13 @@ $(document).ready(function () {
       $(this).val( getSuggestedMonths() );
     }
   });
+
+  handleParam();
+
+  $("#tutorial").on("click", function(e){
+    $("#tutorialText").toggle();
+    e.preventDefault();
+    return false;
+  });
+
 });
