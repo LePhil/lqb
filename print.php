@@ -57,7 +57,7 @@ if ( !isLoggedIn() ) {
 
 		<h2 class="sectionTitle">Gewichtung: <span class="smallerTitle">Wie wichtig ist Ihnen jeder einzelne Aspekt?</span></h2>
 		<p class="explanationText">
-			Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie rechts im Tortendiagramm dargestellt.
+			Für jeden Bereich Ihrer Lebensqualität haben Sie pro Monat angegeben, wie wichtig er ist relativ zu den anderen Bereichen (Gesamt: 100%). Ihre persönliche Gewichtung über die Bereiche sehen Sie im Tortendiagramm dargestellt.
 		</p>
 
 		<table id="pieChartContainer" class="tableContainer"></table>
@@ -65,7 +65,7 @@ if ( !isLoggedIn() ) {
 		<h2 class="sectionTitle 2">Zufriedenheit: <span class="smallerTitle">Wie gut läuft es aktuell in jedem der genannten Aspekte?</span></h2>
 		<p class="explanationText">
 			Für jeden der Bereiche haben Sie zudem angegeben, wie gut es für Sie im jeweiligen Monat lief.<br>
-			Ihre Zufriedenheits-Angaben sehen Sie links für jeden der Bereiche in Form eines Balkens abgetragen.<br><br>
+			Ihre Zufriedenheits-Angaben sehen Sie für jeden der Bereiche in Form eines Balkens abgetragen.<br><br>
 			100 bedeutet, es könnte nicht besser sein, 0 bedeutet, es könnte nicht schlimmer sein.
 		</p>
 
