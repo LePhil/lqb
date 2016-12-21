@@ -144,9 +144,9 @@ foreach ($csv as $col => $val) {
 
 		foreach ([1,2,3,4,5] as $n) {
 			if($month == "1") {
-				$word = trim($val["Aspekt_".$n."_t".$month]);
+				$word = addslashes(trim($val["Aspekt_".$n."_t".$month]));
 			} else {
-				$word = trim($val["Aspekt_".$n."_Stichwort_t".$month]);
+				$word = addslashes(trim($val["Aspekt_".$n."_Stichwort_t".$month]));
 			}
 			if(!empty($word)) {
 				$words[] = "'".$word."'";
