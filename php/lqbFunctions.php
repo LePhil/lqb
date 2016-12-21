@@ -27,11 +27,15 @@ function isAdmin() {
 }
 
 function goToAdminIndex() {
-  header('Location: /upload/index.php');
+  header('Location: '.getRoot().'upload/index.php');
 }
 
 function goToService() {
-  header('Location: /upload/service.php');
+  header('Location: '.getRoot().'upload/service.php');
+}
+
+function goToServiceWithParam($param) {
+  header('Location: '.getRoot().'upload/service.php?p='.$param);
 }
 
 ?>
