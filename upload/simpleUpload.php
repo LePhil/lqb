@@ -20,6 +20,10 @@ function exitIfError($code, $msg) {
   exit();
 }
 
+function clean($string) {
+   return preg_replace('/[^A-Za-z0-9\-\_]/', '', $string); // Removes special chars.
+}
+
 if ( !isset($_FILES["file"])) {
   exitIfError(100, "no file selected");
 } else if ($_FILES["file"]["error"] > 0) {
@@ -51,7 +55,8 @@ debug("Months: ".$_POST["months"]);
 debug("==========================");
 
 // piece together array
-$csv = array_map('str_getcsv', file($_FILES["file"]["tmp_name"]));
+//$csv = array_map('str_getcsv', file($_FILES["file"]["tmp_name"]));
+$csv = array_map(function($v){return str_getcsv($v, ";");}, file($_FILES["file"]["tmp_name"]) );
 array_walk($csv, function(&$a) use ($csv) {
   $a = array_combine($csv[0], $a);
 });
