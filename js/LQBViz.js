@@ -42,6 +42,8 @@ var LQBViz = (function () {
       monthsArray.push( month );
     });
 
+    monthsArray = _.sortBy(monthsArray, function(m){return m.id;});
+
     return checkMonths( monthsArray );
   };
   var checkMonths = function ( monthsToCheck ) {
