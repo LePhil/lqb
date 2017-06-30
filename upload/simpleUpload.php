@@ -21,6 +21,10 @@ function exitIfError($code, $msg) {
   exit();
 }
 
+function clean_all($string) {
+	return $string; //TODO
+}
+
 function clean($string) {
    return preg_replace('/[^A-Za-z0-9\-\_]/', '', $string); // Removes special chars.
 }
@@ -57,12 +61,17 @@ debug("==========================");
 
 // piece together array
 //$csv = array_map('str_getcsv', file($_FILES["file"]["tmp_name"]));
-$csv = array_map(function($v){return clean(str_getcsv($v, ";"));}, file($_FILES["file"]["tmp_name"]) );
+$csv = array_map(function($v){return clean_all(str_getcsv($v, ";"));}, file($_FILES["file"]["tmp_name"]) );
 array_walk($csv, function(&$a) use ($csv) {
   $a = array_combine($csv[0], $a);
 });
 $headers = array_shift($csv); # remove column header
 $headers = array_map("strtolower", $headers); //lowercase all the way
+
+foreach ($headers as &$value) {
+	$value = clean($value);
+}
+unset($value);
 
 $queryArray = [];
 
