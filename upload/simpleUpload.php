@@ -62,6 +62,12 @@ array_walk($csv, function(&$a) use ($csv) {
 });
 $headers = array_shift($csv); # remove column header
 $headers = array_map("strtolower", $headers); //lowercase all the way
+$headers = array_values($headers);
+
+foreach ($headers as &$value) {
+	$value = clean($value);
+}
+unset($value);
 
 $queryArray = [];
 
