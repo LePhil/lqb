@@ -14,6 +14,7 @@ function debug($msg) {
     echo $msg."<br />";
   }
 }
+
 function exitIfError($code, $msg) {
   echo "ERROR ". $code .": ".$msg;
 	goToServiceWithParam($code);
@@ -56,18 +57,12 @@ debug("==========================");
 
 // piece together array
 //$csv = array_map('str_getcsv', file($_FILES["file"]["tmp_name"]));
-$csv = array_map(function($v){return str_getcsv($v, ";");}, file($_FILES["file"]["tmp_name"]) );
+$csv = array_map(function($v){return clean(str_getcsv($v, ";"));}, file($_FILES["file"]["tmp_name"]) );
 array_walk($csv, function(&$a) use ($csv) {
   $a = array_combine($csv[0], $a);
 });
 $headers = array_shift($csv); # remove column header
 $headers = array_map("strtolower", $headers); //lowercase all the way
-$headers = array_values($headers);
-
-foreach ($headers as &$value) {
-	$value = clean($value);
-}
-unset($value);
 
 $queryArray = [];
 
