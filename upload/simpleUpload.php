@@ -39,8 +39,7 @@ $months = explode(",", $_POST["months"]);
 $months = array_map('trim', $months);
 
 $neededOncePerPerson = [
-  "code",
-  "birthday"
+  "code"
 ];
 $neededFiveTimesPerMonth = [
   "Aspekt_-X-_Stichwort_t-M-",
