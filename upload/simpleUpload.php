@@ -145,7 +145,6 @@ foreach ($csv as $col => $val) {
 	foreach ($months as $month) {
 		$code = $val["code"];
 		$id = $code."_".$month;
-		$birthday = $val["birthday"];
 		$words = [];
 		$values = [];
 		$weights = [];
@@ -167,13 +166,12 @@ foreach ($csv as $col => $val) {
 
 		if(count($words) == 5 && count($values) == 5 && count($weights) == 5) {
 			debug($id.": "
-						.$val["birthday"]
 						." WORDS: ".join(", ", $words)
 						." VALUES: ".join(", ", $values)
 						." WEIGHTS: ".join(", ", $weights)
 						." TOTAL: ".$total);
 
-			$valueArray[] = "('".$id."','".$code."','".$birthday."',".$month.",".join(", ", $words).",".join(", ", $values).",".join(", ", $weights).",".$total.")";
+			$valueArray[] = "('".$id."','".$code."',".$month.",".join(", ", $words).",".join(", ", $values).",".join(", ", $weights).",".$total.")";
 
 		} else {
 			debug($val["code"]."_".$month.": EMPTY");
@@ -182,7 +180,7 @@ foreach ($csv as $col => $val) {
 }
 
 $pdo = new PDO('mysql:host='.getServerParam().';dbname='.getDbParam(), getUserParam(), getPassParam(),[\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
-$queryString = "INSERT IGNORE INTO `".getTableParam()."` (`id`, `code`, `birthday`, `month`, `word1`, `word2`, `word3`, `word4`, `word5`, `value1`, `value2`, `value3`, `value4`, `value5`, `weight1`, `weight2`, `weight3`, `weight4`, `weight5`, `total`) VALUES ".join(", ", $valueArray).";";
+$queryString = "INSERT IGNORE INTO `".getTableParam()."` (`id`, `code`, `month`, `word1`, `word2`, `word3`, `word4`, `word5`, `value1`, `value2`, `value3`, `value4`, `value5`, `weight1`, `weight2`, `weight3`, `weight4`, `weight5`, `total`) VALUES ".join(", ", $valueArray).";";
 debug("QUERY: ".$queryString);
 
 $insertValues = $pdo->prepare($queryString);
