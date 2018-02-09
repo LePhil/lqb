@@ -2,6 +2,8 @@
 
 include '../php/lqbFunctions.php';
 
+$separator = ";";
+
 $debug = false;
 if ( !$debug && !isAdmin() ) {
 	exit();
@@ -17,6 +19,10 @@ function debug($msg) {
 
 function exitIfError($code, $msg) {
   echo "ERROR ". $code .": ".$msg;
+
+  if ($debug) {
+    die();
+  }
 	goToServiceWithParam($code);
   exit();
 }
@@ -42,7 +48,7 @@ $neededOncePerPerson = [
   "code"
 ];
 $neededFiveTimesPerMonth = [
-  "Aspekt_-X-_Stichwort_t-M-",
+  "Aspekt_-X-_Stichwort_t-M-",  /* In Month 1 and from month 19 on without the Stichwort! */
   "Zufriedenheit_-X-_t-M-",
   "Gewichtung_-X-_t-M-"
 ];
@@ -60,7 +66,7 @@ debug("==========================");
 
 // piece together array
 //$csv = array_map('str_getcsv', file($_FILES["file"]["tmp_name"]));
-$csv = array_map(function($v){return clean_all(str_getcsv($v, ";"));}, file($_FILES["file"]["tmp_name"]) );
+$csv = array_map(function($v){return clean_all(str_getcsv($v, $separator));}, file($_FILES["file"]["tmp_name"]) );
 array_walk($csv, function(&$a) use ($csv) {
   $a = array_combine($csv[0], $a);
 });
@@ -108,7 +114,7 @@ foreach ($neededFiveTimesPerMonth as $neededHeader) {
     foreach ([1,2,3,4,5] as $time) {
 
       // fix first month..
-      if ( $month == "1" && $neededHeader == "Aspekt_-X-_Stichwort_t-M-" ) {
+      if ( ($month == "1" || intval($month) >= 19) && $neededHeader == "Aspekt_-X-_Stichwort_t-M-" ) {
         $neededHeaderTemp = "Aspekt_".$time."_t-M-";
       } else {
         $neededHeaderTemp = str_replace("-X-", $time, $neededHeader);
@@ -151,7 +157,7 @@ foreach ($csv as $col => $val) {
 		$total = (float)($val["SeiQoL_t".$month] ? $val["SeiQoL_t".$month] : $val["Seiqol_t".$month]);
 
 		foreach ([1,2,3,4,5] as $n) {
-			if($month == "1") {
+			if($month == "1" || intval($month) >= 19) {
 				$word = addslashes(trim($val["Aspekt_".$n."_t".$month]));
 			} else {
 				$word = addslashes(trim($val["Aspekt_".$n."_Stichwort_t".$month]));
