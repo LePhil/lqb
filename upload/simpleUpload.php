@@ -2,7 +2,7 @@
 
 include '../php/lqbFunctions.php';
 
-$separator = ";";
+$separator = ';';
 
 $debug = false;
 if ( !$debug && !isAdmin() ) {
@@ -25,10 +25,6 @@ function exitIfError($code, $msg) {
   }
 	goToServiceWithParam($code);
   exit();
-}
-
-function clean_all($string) {
-	return $string; //TODO
 }
 
 function clean($string) {
@@ -66,12 +62,21 @@ debug("==========================");
 
 // piece together array
 //$csv = array_map('str_getcsv', file($_FILES["file"]["tmp_name"]));
-$csv = array_map(function($v){return clean_all(str_getcsv($v, $separator));}, file($_FILES["file"]["tmp_name"]) );
+// $csv = array_map(function($v){return str_getcsv($v, $separator);}, file($_FILES["file"]["tmp_name"]));
+$csv = [];
+foreach (file($_FILES["file"]["tmp_name"]) as $line) {
+	$csv[] = str_getcsv($line, $separator);
+}
 array_walk($csv, function(&$a) use ($csv) {
   $a = array_combine($csv[0], $a);
 });
+
+
+
 $headers = array_shift($csv); # remove column header
 $headers = array_map("strtolower", $headers); //lowercase all the way
+
+
 
 foreach ($headers as &$value) {
 	$value = clean($value);
