@@ -296,7 +296,8 @@ var LQBViz = (function () {
   var getCategories = function(i) {
     if (selectedMonth.words[i].length < 3){
       var categories = ['Familie','Partnerschaft/Liebe','Freunde', 'Soziale Beziehungen', 'Haustiere', 'Arbeit/Ehrenamt', 'Gesundheit', 'Wohnen/Wohnumwelt', 'Finanzen', 'Hobbys:Sport/Bewegung', 'Hobbys:Kultur', 'Reisen', 'Politische Lage/Frieden', 'Religion/Spiritualität/Sinnhaftigkeit', 'Genuss/Lebensfreude', 'Natur/Umwelt/Nachhaltigkeit', 'Bildung/geistige Anregung', 'Selbstständigkeit/Autonomie', 'Andere'];
-      return categories[i];
+      var cat_num = Number(selectedMonth.words[i])-1;
+      return categories[cat_num];
     }
     else {return selectedMonth.words[i];}
   };
