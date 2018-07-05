@@ -87,13 +87,21 @@ var LQBViz = (function () {
    * @param  {Number} index
    * @return {String}
    */
+// the index of the months were changed by the study team after november16 (t12); t13 is january17
   var getMonthName = function ( index ) {
-    var year = (index-(index%12))/12;
-    year = index%12 > 2 ? year+1 : year;
-    return monthNames[ (index-1) % 12 ] + " '" + (15+year);
+    if (index < 13){
+      var year = (index-(index%12))/12;
+      year = index%12 > 2 ? year+1 : year;
+      return monthNames[ (index-1) % 12 ] + " '" + (15+year);}
+    else if (index < 25) {
+      var year = 17;
+      return monthNames[ (index+1) % 12 ] + " '" + (year);}
+    else if (index < 37) {
+      var year = 18;
+      return monthNames[ (index+1) % 12 ] + " '" + (year);}
   };
   var getMonthNameShort = function( lqbIndex ) {
-    return monthNamesShort[ (lqbIndex-1) % 12 ];
+    return monthNamesShort[ (lqbIndex+1) % 12 ];
   };
 
   /**
@@ -273,7 +281,7 @@ var LQBViz = (function () {
   var updateGraphs = function() {
     for( var i = 0; i < nrOfEntries; i++ ) {
       pieChart.data.datasets[0].data[i] = selectedMonth.weights[i];
-      var val = selectedMonth.words[i];
+      var val = getCategories(i);
       updatePieLegend( i, val + " ("+selectedMonth.weights[i]+"%)" );
       pieChart.data.labels[i] = truncate(val, 28);
 
@@ -285,7 +293,13 @@ var LQBViz = (function () {
     barChart.update();
     pieChart.update();
   };
-
+  var getCategories = function(i) {
+    if (selectedMonth.words[i].length < 3){
+      var categories = ['Familie','Partnerschaft/Liebe','Freunde', 'Soziale Beziehungen', 'Haustiere', 'Arbeit/Ehrenamt', 'Gesundheit', 'Wohnen/Wohnumwelt', 'Finanzen', 'Hobbys:Sport/Bewegung', 'Hobbys:Kultur', 'Reisen', 'Politische Lage/Frieden', 'Religion/Spiritualität/Sinnhaftigkeit', 'Genuss/Lebensfreude', 'Natur/Umwelt/Nachhaltigkeit', 'Bildung/geistige Anregung', 'Selbstständigkeit/Autonomie', 'Andere'];
+      return categories[i];
+    }
+    else {return selectedMonth.words[i];}
+  };
   var drawCharts = function() {
     drawLineChart();
     pieChart = new Chart( get2dContext("chart-area2"), {
